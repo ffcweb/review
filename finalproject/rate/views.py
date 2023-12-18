@@ -98,13 +98,13 @@ def create_review(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, 'rate/create_review.html')
-#   return render(request, 'rate/create_review.html', {'form': form, 'store': store})
+
+
 
     # ==============================================
 
-# @login_required
+
 def all_reviews(request):
-    # First, get all the reviews in timestamp order.
     reviews = Review.objects.all().order_by('-timestamp')
 
     # Use pagination built-in function.
@@ -125,35 +125,84 @@ def all_reviews(request):
 
 def store_list(request):
     stores = Store.objects.all().order_by('-Joined_date')
-    return render(request, 'rate/store_list.html', {'stores': stores})
+    # return render(request, 'rate/store_list.html', {'stores': stores})
 
-# def store_profile(request, store_id):
-#     store = get_object_or_404(Store, pk=store_id)
-#     reviews = Review.objects.filter(store_name=store)
-#     return render(request, 'rate/store_profile.html', {'store': store, 'reviews': reviews})
-
-def store_profile(request, store_id):
-    reviews = Review.objects.all().order_by('-timestamp')
-    store = get_object_or_404(Store, id =store_id)
-
-  # Use pagination built-in function.
-    paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
+    # Use pagination built-in function.
+    paginator = Paginator(stores, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
     try:
-        paginated_reviews = paginator.page(page)
+        paginated_stores = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver the first page.
-        paginated_reviews = paginator.page(1)
+        paginated_stores = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g., 9999), deliver the last page of results.
-        paginated_reviews = paginator.page(paginator.num_pages)
+        paginated_stores = paginator.page(paginator.num_pages)
 
-    return render(request, 'rate/store_profile.html', {'store': store, "reviews":paginated_reviews })
+    return render(request, 'rate/store_list.html', { 'stores': paginated_stores})
+
+
+
+
+def store_profile(request, store_id):
+   
+    # store = get_object_or_404(Store, id =store_id)
+    # reviews = Review.objects.all().order_by('-timestamp')
+
+    store = get_object_or_404(Store, id =store_id)
+    reviews_in_store = Review.objects.filter(store = store).order_by('-timestamp')
+
+
+    context = {
+        'store': store,
+        'reviews_in_store': reviews_in_store,
+    }
+    # return render(request, 'rate/store_profile.html', context)
+
+    # Use pagination built-in function.
+    paginator = Paginator(reviews_in_store, 10)  # Show 10 reviews per page.
+    page = request.GET.get('page')
+    try:
+        paginated_reviews_in_store = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_reviews_in_store = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver the last page of results.
+        paginated_reviews_in_store = paginator.page(paginator.num_pages)
+
+    
+
+    return render(request, 'rate/store_profile.html', {'store': store, "reviews_in_store":paginated_reviews_in_store })
+
+# ================================================
+@login_required
+def user_profile(request, user_id):
+    # username = request.user.username
+    # First, get all the reviews in timestamp order.
+    review_user = get_object_or_404(User, username = username)
+    reviews = Review.objects.filter(user=review_user).order_by('-timestamp')
+
+# Use pagination built-in function.
+    paginator = Paginator(reviews_in_store, 10)  # Show 10 reviews per page.
+    page = request.GET.get('page')
+    try:
+        paginated_reviews_in_store = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page.
+        paginated_reviews_in_store = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., 9999), deliver the last page of results.
+        paginated_reviews_in_store = paginator.page(paginator.num_pages)
+
+    return render(request, 'rate/user_profile.html', {'user': user, "reviews":paginated_reviews })
 
     # ==============================================
 def popular_stores(request):
     # Placeholder logic for popular_stores view
     return render(request, 'rate/popular_stores.html')  # Replace with your actual template
+
+
     # ==============================================
 def star_stores(request):
     # Placeholder logic for star_stores view

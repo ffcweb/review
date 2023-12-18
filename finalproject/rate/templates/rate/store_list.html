@@ -21,6 +21,24 @@
             {% endfor %}
         </div>
         
+        <!-- pagination -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if stores.has_previous %}
+                <a href="?page=1">&laquo; First |  </a>
+                <a href="?page={{ stores.previous_page_number }}">   previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ stores.number }} of {{ stores.paginator.num_pages }}.
+                </span>
+
+                {% if stores.has_next %}
+                <a href="?page={{ stores.next_page_number }}">Next |  </a>
+                <a href="?page={{ stores.paginator.num_pages }}">   Last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </div>
 </div>
 <hr>

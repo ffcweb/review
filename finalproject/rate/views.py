@@ -15,7 +15,6 @@ from .models import Store, Review
 
 def index(request):
     # return render(request, "rate/index.html")
-   
     reviews = Review.objects.all().order_by("-timestamp")
 
      # use pagination built-in function
@@ -87,7 +86,7 @@ def register(request):
 
 # =============================
 # For the store's profile to post new review  
-# @login_required
+@login_required
 def create_review(request):
     if request.method == "POST":
         content = request.POST["content"]
@@ -100,26 +99,6 @@ def create_review(request):
     else:
         return render(request, 'rate/create_review.html')
 #   return render(request, 'rate/create_review.html', {'form': form, 'store': store})
-
-    # ==============================================
-# @login_required
-# def submit_review(request, store_id):
-#     store = get_object_or_404(Store, pk=store_id)
-
-#     if request.method == 'POST':
-#         form = ReviewForm(request.POST)
-#         if form.is_valid():
-#             # Create and save the review
-#             review = form.save(commit=False)
-#             review.user_name = request.user  # Assuming you're using authentication
-#             review.store = store  # Set the store for the review
-#             review.save()
-#             messages.success(request, 'Review submitted successfully.')
-#             return redirect('store_profile', store_id=store.id)
-#     else:
-#         form = ReviewForm()
-
-#     return render(request, 'rate/submit_review.html', {'form': form, 'store': store})
 
     # ==============================================
 
@@ -156,19 +135,8 @@ def store_list(request):
 def store_profile(request, store_id):
     reviews = Review.objects.all().order_by('-timestamp')
     store = get_object_or_404(Store, id =store_id)
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.store = store  # Associate the review with the store
-            review.user_name = request.user
-            review.save()
-            return redirect('store_profile', store_id=store_id)  
-            # Redirect to the same store profile page
-    else:
-        form = ReviewForm()
 
-        # Use pagination built-in function.
+  # Use pagination built-in function.
     paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
     try:
@@ -180,7 +148,7 @@ def store_profile(request, store_id):
         # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_reviews = paginator.page(paginator.num_pages)
 
-    return render(request, 'rate/store_profile.html', {'store': store, 'form': form, "reviews":paginated_reviews })
+    return render(request, 'rate/store_profile.html', {'store': store, "reviews":paginated_reviews })
 
     # ==============================================
 def popular_stores(request):

@@ -98,9 +98,6 @@ def create_review(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, 'rate/create_review.html')
-
-
-
     # ==============================================
 
 
@@ -157,8 +154,6 @@ def store_profile(request, store_id):
         'store': store,
         'reviews_in_store': reviews_in_store,
     }
-    # return render(request, 'rate/store_profile.html', context)
-
     # Use pagination built-in function.
     paginator = Paginator(reviews_in_store, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -171,9 +166,9 @@ def store_profile(request, store_id):
         # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_reviews_in_store = paginator.page(paginator.num_pages)
 
-    
+    return render(request, 'rate/store_profile.html', { 'reviews_in_store': paginated_reviews_in_store})
 
-    return render(request, 'rate/store_profile.html', {'store': store, "reviews_in_store":paginated_reviews_in_store })
+
 
 # ================================================
 @login_required

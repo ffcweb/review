@@ -20,6 +20,7 @@ urlpatterns = [
     # path('review/', views.review, name='review'),
 
     path('create_review/', views.create_review, name='create_review'),
+    path('create_review/<int:user_id>/', views.create_review, name='create_review'),
      # path('submit_review/<int:store_id>/', views.submit_review, name='submit_review'),
     # path('submit_review/', views.submit_review, name='submit_review'),
 

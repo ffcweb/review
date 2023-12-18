@@ -23,36 +23,12 @@
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
         <p>Average Star Rating: {{ store.average_rating }}</p>
-
+        <hr>
       </div>
     </div>
     <hr>
  
-    <!-- ========= Display All of the Reviews related the store ======================= -->
-    <h5>All the Reviews for this store that You might find helpfull</h5>
-    
-    {% for review in reviews_in_store %}
-    <ul>
-      <!-- <div class="review"> -->
-        <div class="review" data-post-id="{{ review.id }}">
-          <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
-          <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
-          <p>Review: {{ review.content }}</p> 
-          <p>Time: {{ review.timestamp }}</p>
-          <p>Content: {{ review.content }}</p>
-          <p>Rate Heart: {{ review.star_rating }}</p>
-          <p>Spending: {{ review.spending }}</p>
-          <p>Likes : {{ review.likes }}</p>
-        <hr>
-      </div>
-    </ul>
-    {% endfor %}
-    <hr>
-
-
-
-
-
+  
     <!--=================== Form for submitting reviews================== -->
     <div class="container-fluid">
       <div class="store-container">
@@ -91,10 +67,53 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           </div>
-        </div>
+
+       <!-- ========= Display All of the Reviews related the store ======================= -->
+    <h5>All the Reviews for this store that You might find helpfull</h5>
+    
+    {% for review in reviews_in_store %}
+    <ul>
+      <!-- <div class="review"> -->
+        <div class="review" data-post-id="{{ review.id }}">
+          <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
+          <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+          <p>Review: {{ review.content }}</p> 
+          <p>Time: {{ review.timestamp }}</p>
+          <p>Content: {{ review.content }}</p>
+          <p>Rate Heart: {{ review.star_rating }}</p>
+          <p>Spending: {{ review.spending }}</p>
+          <p>Likes : {{ review.likes }}</p>
+        <hr>
       </div>
+    </ul>
+    {% endfor %}
+
+
+       <!-- pagination -->
+       <div class="pagination">
+        <span class="step-links">
+            {% if reviews_in_store.has_previous %}
+            <a href="?page=1">&laquo; First |  </a>
+            <a href="?page={{ reviews_in_store.previous_page_number }}">   previous</a>
+            {% endif %}
+  
+            <span class="current">
+                Page {{ reviews_in_store.number }} of {{ reviews_in_store.paginator.num_pages }}.
+            </span>
+  
+            {% if reviews.has_next %}
+            <a href="?page={{ reviews_in_store.next_page_number }}">Next |  </a>
+            <a href="?page={{ reviews_in_store.paginator.num_pages }}">   Last &raquo;</a>
+            {% endif %}
+        </span>
+      </div>
+
     </div>
-    </div>
+  </div>
+</div>
+</div>
+
+
 
 {% endblock %}
 

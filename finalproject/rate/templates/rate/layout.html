@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social rate{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'rate/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+
+  <!-- Header -->
+  <header>
+    <h1>{% block header %}
+        Review & Rate
+        {% endblock %}</h1>
+
+    <!-- Navigation Bar -->
+                       
+    <nav>
+      <ul>
+        <li><a href="{% url 'index' %}">Home</a></li>
+        
+        <!-- Dropdown Menu -->
+        <li class="dropdown">
+          <a href="#" class="dropbtn">Categories</a>
+          <div class="dropdown-content">
+            <a href="#">Restaurant</a>
+            <a href="#">Hotel</a>
+            <a href="#">Follower store</a>
+            <a href="#">Bar</a>
+            <a href="#">Depaner</a>
+
+            <!-- Add more categories as needed -->
+          </div>
+        </li>
+
+        <!-- <li><a href="{% url 'create_review' %}">Create Reviews</a></li> -->
+        <li><a href="{% url 'popular_stores' %}">Popular Stores</a></li>
+        <li><a href="{% url 'star_stores' %}">Star Stores</a></li>
+        <li><a href="{% url 'store_list' %}">All Stores</a></li>
+        <li><a href="{% url 'all_reviews' %}">All Reviews</a></li>
+      </ul>
+    </nav>
+
+    <!-- Search Box and Authentication Links -->
+    <div class="header-right">
+      <form class="search-form">
+        <input type="text" placeholder="Search...">
+        <button type="submit">Search</button>
+      </form>
+
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="#"><strong>You have signe in as : {{ user.username }}</strong></a>
+      </li>
+
+      {% else %}
+
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Sign Up</a>
+    
+
+      {% endif %}
+
+    </div>
+  </header>
+
+  <main>
+    {% block body %}
+    {% endblock %}
+</main>
+
+ <!-- Footer -->
+ <footer>
+    <p>&copy; 2023 Your Site Footer</p>
+  </footer>
+
+  <!-- Include your JavaScript files or scripts here -->
+  <script src="{% static 'rate/script.js' %}"></script>
+
+</body>
+</html>

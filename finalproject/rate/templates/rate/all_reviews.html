@@ -1,0 +1,35 @@
+<!-- rate/templates/rate/all_reviews.html -->
+{% extends "rate/layout.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+  <div class="store-container">
+    <div class="card">
+
+        <h2>All Reviews </h2>
+        {% for review in reviews %}
+        <ul>
+          <div class="review">
+            <h5><a href="{% url 'all_reviews' %}"> {{ review.store }}</a></h5>
+            <span hidden><h2> ID : {{ store.id }} </h2></span>
+            <img src="{{ store.image_url }}" alt="iamge">
+            <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+            <p>Store: {{ review.store }}</p>
+            <p>Content: {{ review.content }}</p>
+            <p>Rate Heart: {{ review.star_rating }}</p>
+            <p>Spending: {{ review.spending }}</p>
+            <p>Likes : {{ review.likes }}</p>
+            <hr>
+          </div>
+        </ul>
+        {% endfor %}
+
+        
+
+    </div>
+  </div>
+</div>
+</ul>
+{% endblock %}
+

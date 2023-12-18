@@ -1,0 +1,90 @@
+<!-- rate/templates/rate/store_profile.html -->
+{% extends "rate/layout.html" %}
+
+{% block body %}
+{% block content %}
+
+<h1>Display Store's profile</h1>
+
+<hr>
+
+<div class="container-fluid">
+  <div class="store-container">
+    <div class="card">
+      <div class="card-body">
+        <h2>{{ store.name }}'s Profile</h2>
+        <span hidden><h2> ID : {{ store.id }} </h2></span>
+        <img src="{{ store.image_url }}" alt="iamge">
+        <p>Category: {{ store.category }}</p>
+        <p>Star Rating: {{ store.star_rating }}</p>
+        <p>Joined Date: {{ store.Joined_date }}</p>
+        <p>Address: {{ store.address }}</p>
+        <p>Introduction:  {{ store.introduction }}</p>
+        <p>Opening Time: {{ store.opening_time }}</p>
+        <p>Closing Time: {{ store.closing_time }}</p>
+        <p>Average Star Rating: {{ store.average_rating }}</p>
+        <hr>
+        <hr>
+      </div>
+    </div>
+    <hr>
+ 
+    <!-- ========= Display All of the Reviews related the store ======================= -->
+    <h3>All the Reviews for this store that You might find helpfull</h3>
+    {% for review in reviews %}
+    <ul>
+      <div class="review">
+        <h5><a href="{% url 'store_profile' store.id %}"> {{ review.store.name }}</a></h5>
+        <p>Posted by {{ review.user.username }} on {{ review.timestamp }}</p>
+        <img src="{{ review.image_url }}" alt="iamge">
+        <p>Content: {{ review.content }}</p>
+        <p>Rate Heart: {{ review.star_rating }}</p>
+        <p>Spending: {{ review.spending }}</p>
+        <p>Likes : {{ review.likes }}</p>
+        <hr>
+      </div>
+    </ul>
+    {% endfor %}
+
+  
+
+    <hr>
+    <!--=================== Form for submitting reviews================== -->
+    <h4>Post your reviews</h4>
+    <form method="post" action="{% url 'create_review' %}">
+        {% csrf_token %}
+        <!-- hid the store id on the front-end -->
+        <span hidden> 
+          <div class="form-group">
+            <label for="store_id">store_id:</label>
+            <input type="number" class="form-control" id="store_id" name="store_id" value="{{ store.id }}">
+          </div>
+        </span>
+        <div class="form-group">
+          <label for="content">Review Content:</label>
+          <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write your review here"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="star_rating">Star rating:</label>
+          <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" value="5">
+        </div>
+        <div class="form-group">
+          <label for="spending">Spending:</label>
+          <input type="number" class="form-control" id="spending" name="spending" min="1.00" step="1.00" value="0.00">
+        </div>
+        <div class="form-group">
+          <label for="image_url">Image URL:</label>
+          <input type="url" class="form-control" id="image_url" name="image_url">
+        </div>
+        <div class="form-group">
+          <label for="link_url">Link URL:</label>
+          <input type="url" class="form-control" id="link_url" name="link_url">
+        </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% endblock %}

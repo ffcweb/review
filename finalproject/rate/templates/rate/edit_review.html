@@ -1,0 +1,14 @@
+{% extends 'rate/layout.html' %}
+
+{% block content %}
+
+    <h1>Edit Reviews</h1>
+
+    <form method="post" action="{% url 'edit_review' review.id %}">
+        {% csrf_token %}
+        <label for="content">Edit your post:</label>
+        <textarea name="content" id="content" required>{{ review.content }}</textarea>
+        <p><button id="editReview" type="submit" class="btn btn-primary">Edit</button></p>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'rate/layout.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<h1>Create Reviews</h1>
+<!-- Form to submit a new post -->
+  <div class="container-fluid">
+    <div class="store-container">
+      <div class="card">
+        <div class="card-body">
+          <h2>Write your reviews</h2>
+
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <textarea class="form-control" name="content" rows="4" placeholder="What's on your mind?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+
+
+        </div>
+      </div>
+    </div>
+{% endblock %}
+

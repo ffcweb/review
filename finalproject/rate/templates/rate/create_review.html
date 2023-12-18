@@ -10,12 +10,12 @@
     <div class="store-container">
       <div class="card">
         <div class="card-body">
-          <h2>Write your reviews</h2>
+          <h2>Write your comments</h2>
 
           <form method="post">
             {% csrf_token %}
             <div class="form-group">
-              <textarea class="form-control" name="content" rows="4" placeholder="What's on your mind?"></textarea>
+              <textarea class="form-control" name="content" rows="4" placeholder="What's your comments?"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

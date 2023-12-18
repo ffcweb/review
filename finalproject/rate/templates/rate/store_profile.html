@@ -13,7 +13,7 @@
     <div class="card">
       <div class="card-body">
         <h2>{{ store.name }}'s Profile</h2>
-        <span hidden><h2> ID : {{ store.id }} </h2></span>
+        <h2> ID : {{ store.id }} </h2>
         <img src="{{ store.image_url }}" alt="iamge">
         <p>Category: {{ store.category }}</p>
         <p>Star Rating: {{ store.star_rating }}</p>
@@ -77,6 +77,7 @@
         <div class="review" data-post-id="{{ review.id }}">
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
           <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+          <img src="{{ review.image_url }}" alt="iamge">
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>
           <p>Content: {{ review.content }}</p>

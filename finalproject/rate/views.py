@@ -85,21 +85,22 @@ def register(request):
         return render(request, "rate/register.html")
 
 # =============================
-# For the store's profile to post new review  
+# For the store's profile to post new review
 @login_required
 def create_review(request):
     if request.method == "POST":
         content = request.POST["content"]
         spending = request.POST["spending"]
         store_id = request.POST["store_id"]
+        image = request.POST["image_url"]
+        
         user = request.user
         print(request)
-        Review.objects.create(content=content, user = user, spending= spending, store_id=store_id)
+        Review.objects.create(content=content, user = user, spending= spending, store_id=store_id, image_url=image)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, 'rate/create_review.html')
     # ==============================================
-
 
 def all_reviews(request):
     reviews = Review.objects.all().order_by('-timestamp')
@@ -145,15 +146,9 @@ def store_profile(request, store_id):
    
     # store = get_object_or_404(Store, id =store_id)
     # reviews = Review.objects.all().order_by('-timestamp')
-
     store = get_object_or_404(Store, id =store_id)
     reviews_in_store = Review.objects.filter(store = store).order_by('-timestamp')
 
-
-    context = {
-        'store': store,
-        'reviews_in_store': reviews_in_store,
-    }
     # Use pagination built-in function.
     paginator = Paginator(reviews_in_store, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -166,7 +161,12 @@ def store_profile(request, store_id):
         # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_reviews_in_store = paginator.page(paginator.num_pages)
 
-    return render(request, 'rate/store_profile.html', { 'reviews_in_store': paginated_reviews_in_store})
+    context = {
+        'store': store,
+        'reviews_in_store': reviews_in_store,
+    }
+
+    return render(request, 'rate/store_profile.html', context)
 
 
 

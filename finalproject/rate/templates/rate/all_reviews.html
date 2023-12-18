@@ -10,9 +10,8 @@
       {% for review in reviews %}
       <ul>
         <div class="review">
-          <!-- Link to the store profile page -->
+          <!-- Link to the store_profile page by tore id, showing as the store name -->
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
-          <!-- <h5><a href="{% url 'all_reviews' %}"> {{ review.store }}</a></h5> -->
           <span hidden><h2> ID : {{ store.id }} </h2></span>
           <img src="{{ store.image_url }}" alt="iamge">
           <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>

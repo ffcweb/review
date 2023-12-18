@@ -5,24 +5,46 @@
 
   {% block content %}
 
-      <div class="container-fluid">
-        <h1>The Latest Reviews</h1>
-        <hr>
+<div class="container-fluid">
+  <h1>The Latest Reviews</h1>
+  <hr>
+  {% for review in reviews %}
+  <div class="review">
+    <!-- Link to the store_profile page by tore id, showing as the store name -->
+    <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
+    <!-- <h2><a href="{% url 'all_reviews' %}">{{ review.store }}</a></h2> -->
+    <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+    <p>Store: {{ review.store }}</p>
+    <p>Content: {{ review.content }}</p>
+    <p>Rate Heart: {{ review.star_rating }}</p>
+    <p>Spending: {{ review.spending }}</p>
+    <p>Likes : {{ review.likes }}</p>
+    <hr>
+  </div>
+  {% endfor %}
 
-        {% for review in reviews %}
-          <div class="review">
-            <h2><a href="{% url 'all_reviews' %}">{{ review.store }}</a></h2>
-            <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
-            <p>Store: {{ review.store }}</p>
-            <p>Content: {{ review.content }}</p>
-            <p>Rate Heart: {{ review.star_rating }}</p>
-            <p>Spending: {{ review.spending }}</p>
-            <p>Likes : {{ review.likes }}</p>
-            <hr>
-          </div>
-        {% endfor %}
-      </div>
-    </div>
+   <!-- pagination -->
+   <div class="pagination">
+    <span class="step-links">
+        {% if reviews.has_previous %}
+        <a href="?page=1">&laquo; First |  </a>
+        <a href="?page={{ reviews.previous_page_number }}">   previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
+        </span>
+
+        {% if reviews.has_next %}
+        <a href="?page={{ reviews.next_page_number }}">Next |  </a>
+        <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
+        {% endif %}
+    </span>
+  </div>
+
+
+</div>
+
 
   {% endblock %}
 

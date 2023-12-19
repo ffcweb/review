@@ -10,8 +10,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import User, Store, Follow, StoreProfile, UserProfile, FavoriteStore, StoreFollowers
 from .models import Review, LikeReview, CommentOnReview
 from django.urls import reverse
+from django.db.models import Count
 from .forms import ReviewForm
 from .models import Store, Review
+from .models import Category
+
+
 
 def index(request):
     # return render(request, "rate/index.html")
@@ -31,6 +35,10 @@ def index(request):
     
     return render(request, 'rate/index.html', {'reviews': paginated_reviews})
 
+# def index(request):
+#     reviews = Review.objects.all().order_by("-timestamp")
+#     context = {'reviews': reviews}
+#     return render(request, 'rate/index.html', context)
 
 
 def login_view(request):
@@ -85,6 +93,19 @@ def register(request):
         return render(request, "rate/register.html")
 
 # =============================
+def category_list(request):
+    categories = Category.objects.all()
+    print(categories)
+    context = {'categories': categories}
+    return render(request, 'rate/category_list.html', context)
+
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    print(category)
+    context = {'category': category}
+    return render(request, 'rate/category_detail.html', context)
+
+
 # For the store's profile to post new review
 @login_required
 def create_review(request):
@@ -165,7 +186,6 @@ def store_profile(request, store_id):
 
 
 
-
 # ================================================
 @login_required
 def user_profile(request, user_id):
@@ -198,24 +218,11 @@ def user_profile(request, user_id):
 
     # ==============================================
 def popular_stores(request):
-    # Placeholder logic for popular_stores view
-    return render(request, 'rate/popular_stores.html')  # Replace with your actual template
+    return render(request, 'rate/popular_stores.html')  
 
 
     # ==============================================
 def star_stores(request):
-    # Placeholder logic for star_stores view
-    return render(request, 'rate/star_stores.html')  # Replace with your actual template
+    return render(request, 'rate/star_stores.html')  
     # ==============================================
 
-
-
-# def category_list(request):
-#     categories = Category.objects.annotate(num_listings=Count('listings')).filter(num_listings__gt=0)
-#     return render(request, 'auctions/category_list.html', {'categories': categories})
-
-
-# def category_detail(request, category_id):
-#     category = get_object_or_404(Category, pk=category_id)
-#     active_listings = category.listings.filter(is_active=True)
-#     return render(request, 'auctions/category_detail.html', {'category': category, 'active_listings': active_listings})

@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import all_reviews
+from .views import all_reviews, category_list,category_detail
 from . import views
 
 
@@ -9,6 +9,10 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
+
+    path('categories/', category_list, name='category_list'),
+    path('categories/<int:category_id>/', category_detail, name='category_detail'),
+    
 
     path('stores/', views.store_list, name='store_list'),
     path('stores/<int:store_id>/', views.store_profile, name='store_profile'),

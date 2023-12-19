@@ -5,6 +5,16 @@ from django.db import models
 class User(AbstractUser):
     pass
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+    stores = models.ManyToManyField('Store', related_name='categories')
+    image_url = models.URLField(max_length=200, null=True, blank=True, default="")
+
+    def __str__(self):
+        return self.name
+
+
 class Store(models.Model):
     name = models.CharField(max_length=200)
     Joined_date = models.DateTimeField("date Joined")
@@ -15,7 +25,11 @@ class Store(models.Model):
     opening_time = models.TimeField()
     closing_time = models.TimeField()
 
-    category = models.CharField(max_length=35)
+    # category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='stores')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='store_categories')
+
+
+
     image_url = models.URLField(max_length=200, null=True, blank=True, default="")
     link_url = models.URLField(max_length=200, null=True, blank=True)
     
@@ -31,6 +45,7 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
+
 
 
 class Review(models.Model):

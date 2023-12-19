@@ -45,6 +45,7 @@
                     <input type="number" class="form-control" id="store_id" name="store_id" value="{{ store.id }}">
                   </div>
                 </span>
+                
                 <div class="form-group">
                   <label for="content">Review Content:</label>
                   <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write your review here"></textarea>
@@ -53,6 +54,7 @@
                   <label for="star_rating">Star rating:</label>
                   <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" max="5 "value="">
                 </div>
+              
                 <div class="form-group">
                   <label for="spending">Spending:</label>
                   <input type="number" class="form-control" id="spending" name="spending" min="1.00" step="1.00" value="0.00">
@@ -74,10 +76,11 @@
     
     {% for review in reviews %}
     <ul>
-      <!-- <div class="review"> -->
         <div class="review" data-post-id="{{ review.id }}">
+          
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
-          <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+          <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
+          <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
           <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>
@@ -89,6 +92,7 @@
       </div>
     </ul>
     {% endfor %}
+
 
 
        <!-- pagination -->

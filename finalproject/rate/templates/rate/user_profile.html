@@ -1,0 +1,46 @@
+{% extends 'rate/layout.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<h2>{{ user.username }}'s Profile</h2>
+
+<div class="container-fluid">
+    <div class="store-container">
+        <div class="card">
+          <div class="card-body">
+
+            <!-- display the user's profile's information -->
+            <div class="review" data-post-id="{{ review.id }}">
+            <a href="{% url 'user_profile' user_id=user.id %}">{{ user.username }} </a>
+            <img src="{{ user.image_url }}" alt="iamge">
+            <p>Joined Date: {{ user.date_joined }}</p>
+            <p>Address: {{ user.email }}</p>
+            
+            
+            <!--  Display all the posts from this user -->
+            <h4>all the posts from {{ user.username }}</h4>
+            {% for review in user_reviews %}
+            <ul>
+            <div class="user_reviews">
+                <div class="reviews" data-post-id="{{ review.id }}">
+                <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
+                <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+                <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
+                <p>Review: {{ review.content }}</p> 
+                <p>Time: {{ review.timestamp }}</p>
+                <p>Content: {{ review.content }}</p>
+                <p>Rate Heart: {{ review.star_rating }}</p>
+                <p>Spending: {{ review.spending }}</p>
+                <p>Likes : {{ review.likes }}</p>
+                <hr>
+            </div>
+            </ul>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+        
+{% endblock %}

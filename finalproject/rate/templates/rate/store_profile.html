@@ -12,22 +12,23 @@
   <div class="store-container">
     <div class="card">
       <div class="card-body">
+
         <h2>{{ store.name }}'s Profile</h2>
-        <h2> ID : {{ store.id }} </h2>
+        <span hidden><h2> ID : {{ store.id }} </h2></span>
         <img src="{{ store.image_url }}" alt="iamge">
         <p>Category: {{ store.category }}</p>
-        <p>Star Rating: {{ store.star_rating }}</p>
+        <p>Star: {{ store.star_rating }}</p>
         <p>Joined Date: {{ store.Joined_date }}</p>
         <p>Address: {{ store.address }}</p>
         <p>Introduction:  {{ store.introduction }}</p>
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
-        <p>Average Star Rating: {{ store.average_rating }}</p>
-        <hr>
+        <p>Average Star average_rating: {{ store.average_rating }}</p>
+
       </div>
     </div>
+
     <hr>
- 
   
     <!--=================== Form for submitting reviews================== -->
     <div class="container-fluid">
@@ -50,7 +51,7 @@
                 </div>
                 <div class="form-group">
                   <label for="star_rating">Star rating:</label>
-                  <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" value="5">
+                  <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" max="5 "value="">
                 </div>
                 <div class="form-group">
                   <label for="spending">Spending:</label>
@@ -68,16 +69,16 @@
             </form>
           </div>
 
-       <!-- ========= Display All of the Reviews related the store ======================= -->
+    <!-- ========= Display All of the Reviews related the store ======================= -->
     <h5>All the Reviews for this store that You might find helpfull</h5>
     
-    {% for review in reviews_in_store %}
+    {% for review in reviews %}
     <ul>
       <!-- <div class="review"> -->
         <div class="review" data-post-id="{{ review.id }}">
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
           <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
-          <img src="{{ review.image_url }}" alt="iamge">
+          <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>
           <p>Content: {{ review.content }}</p>
@@ -93,18 +94,18 @@
        <!-- pagination -->
        <div class="pagination">
         <span class="step-links">
-            {% if reviews_in_store.has_previous %}
+            {% if reviews.has_previous %}
             <a href="?page=1">&laquo; First |  </a>
-            <a href="?page={{ reviews_in_store.previous_page_number }}">   previous</a>
+            <a href="?page={{ reviews.previous_page_number }}">   previous</a>
             {% endif %}
   
             <span class="current">
-                Page {{ reviews_in_store.number }} of {{ reviews_in_store.paginator.num_pages }}.
+                Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
             </span>
   
-            {% if reviews.has_next %}
-            <a href="?page={{ reviews_in_store.next_page_number }}">Next |  </a>
-            <a href="?page={{ reviews_in_store.paginator.num_pages }}">   Last &raquo;</a>
+            {% if context.has_next %}
+            <a href="?page={{ reviews.next_page_number }}">Next |  </a>
+            <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
             {% endif %}
         </span>
       </div>

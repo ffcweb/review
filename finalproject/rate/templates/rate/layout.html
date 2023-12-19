@@ -34,12 +34,22 @@
             <!-- Add more categories as needed -->
           </div>
         </li>
+        
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'create_review' %}">Create Reviews</a></li>
+        <li><a href="{% url 'user_profile' user_id=user.id %}">user_profile</a></li>
 
-        <!-- <li><a href="{% url 'create_review' %}">Create Reviews</a></li> -->
         <li><a href="{% url 'popular_stores' %}">Popular Stores</a></li>
         <li><a href="{% url 'star_stores' %}">Star Stores</a></li>
         <li><a href="{% url 'store_list' %}">All Stores</a></li>
         <li><a href="{% url 'all_reviews' %}">All Reviews</a></li>
+
+        {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Sign Up</a>
+
+        {% endif %}
+        
       </ul>
     </nav>
 

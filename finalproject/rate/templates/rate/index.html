@@ -9,19 +9,19 @@
   <h1>The Latest Reviews</h1>
   <hr>
   {% for review in reviews %}
-  <div class="review">
-    <!-- Link to the store_profile page by tore id, showing as the store name -->
-    <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
-    <!-- <h2><a href="{% url 'all_reviews' %}">{{ review.store }}</a></h2> -->
-    <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
-    <p>Store: {{ review.store }}</p>
-    <p>Content: {{ review.content }}</p>
-    <p>Rate Heart: {{ review.star_rating }}</p>
-    <p>Spending: {{ review.spending }}</p>
-    <p>Likes : {{ review.likes }}</p>
-    <hr>
-  </div>
-  {% endfor %}
+  <ul>
+    <div class="review">
+      <!-- Link to the store_profile page by tore id, showing as the store name -->
+      <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
+      <span hidden><h2> ID : {{ store.id }} </h2></span>
+      <img src="{{ store.image_url }}" alt="iamge">
+      <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
+      <p>Content: {{ review.content }}</p>
+      <p>Star Rating: {{ review.star_rating }}</p>
+      <hr>
+    </div>
+  </ul>
+    {% endfor %}
 
    <!-- pagination -->
    <div class="pagination">

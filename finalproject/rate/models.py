@@ -16,7 +16,7 @@ class Store(models.Model):
     closing_time = models.TimeField()
 
     category = models.CharField(max_length=35)
-    image_url = models.URLField(max_length=200, null=True, blank=True)
+    image_url = models.URLField(max_length=200, null=True, blank=True, default="")
     link_url = models.URLField(max_length=200, null=True, blank=True)
     
     star_rating = models.IntegerField(choices=[(1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')], default=1)    

@@ -4,15 +4,10 @@
 {% block body %}
 {% block content %}
 
-<h1>Display Store's profile</h1>
-
-<hr>
-
 <div class="container-fluid">
   <div class="store-container">
     <div class="card">
       <div class="card-body">
-
         <h2>{{ store.name }}'s Profile</h2>
         <span hidden><h2> ID : {{ store.id }} </h2></span>
         <img src="{{ store.image_url }}" alt="iamge">
@@ -24,100 +19,131 @@
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
         <p>Average Star average_rating: {{ store.average_rating }}</p>
-
       </div>
     </div>
+  </div>
+</div>
 
-    <hr>
-  
-    <!--=================== Form for submitting reviews================== -->
-    <div class="container-fluid">
-      <div class="store-container">
-        <div class="card">
-          <div class="card-body">
-            <h4>Post your reviews</h4>
-            <form method="post" action="{% url 'create_review' %}">
-                {% csrf_token %}
-                <!-- hid the store id on the front-end -->
-                <span hidden> 
-                  <div class="form-group">
-                    <label for="store_id">store_id:</label>
-                    <input type="number" class="form-control" id="store_id" name="store_id" value="{{ store.id }}">
-                  </div>
-                </span>
-                
-                <div class="form-group">
-                  <label for="content">Review Content:</label>
-                  <textarea class="form-control" id="content" name="content" rows="4" placeholder="Write your review here"></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="star_rating">Star rating:</label>
-                  <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" max="5 "value="">
-                </div>
-              
-                <div class="form-group">
-                  <label for="spending">Spending:</label>
-                  <input type="number" class="form-control" id="spending" name="spending" min="1.00" step="1.00" value="0.00">
-                </div>
-                <div class="form-group">
-                  <label for="image_url">Image URL:</label>
-                  <input type="url" class="form-control" id="image_url" name="image_url">
-                </div>
-                <div class="form-group">
-                  <label for="link_url">Link URL:</label>
-                  <input type="url" class="form-control" id="link_url" name="link_url">
-                </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+<hr>
+
+<!--=================== Form for submitting reviews================== -->
+<div class="container-fluid">
+  <div class="store-container">
+    <div class="card">
+      <div class="card-body">
+        <h4>Post your reviews</h4>
+        <form method="post" action="{% url 'create_review' %}">
+          {% csrf_token %}
+          
+        <!-- hid the store id on the front-end -->
+          <span hidden> 
+            <div class="form-group">
+              <label for="store_id">store_id:</label>
+              <input type="number" class="form-control" id="store_id" name="store_id" value="{{ store.id }}">
+            </div>
+          </span>
+
+          <div class="form-group">
+            <label for="content">Review Content:</label>
+            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Write your review here"></textarea>
           </div>
 
-    <!-- ========= Display All of the Reviews related the store ======================= -->
-    <h5>All the Reviews for this store that You might find helpfull</h5>
-    
-    {% for review in reviews %}
-    <ul>
-        <div class="review" data-post-id="{{ review.id }}">
+
+          <div class="form-group">
+            <label for="star_rating">❤️❤️❤️❤️❤️</label>
+            <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" max="5 "value="">
+          </div>
           
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <!-- <div class="form-group"> -->
+            <label for="spending"> </label>
+            <input type="number" class="form-control" id="spending" name="spending" min="1.00" step="1.00" value="0.00" aria-label="Amount (to the nearest dollar)">
+          </div>
+          
+          
+          <label for="basic-url"></label>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon3">https://example.jpg(Gif/Png)</span>
+            </div>
+            <!-- <div class="form-group"> -->
+              <label for="image_url"></label>
+              <input type="url" class="form-control" id="image_url" name="image_url">
+            </div>
+            
+
+            <label for="basic-url"></label>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">https://example.com</span>
+              </div>
+              <!-- <div class="form-group"> -->
+              <label for="link_url"></label>
+              <input type="url" class="form-control" id="link_url" name="link_url">
+            </div>
+
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<hr>
+
+<!-- ========= Display All of the Reviews related the store ======================= -->
+<div class="container-fluid">
+  <div class="store-container">
+    <div class="card">
+      <div class="card-body">
+      <h5>All the Reviews for this store that You might find helpfull</h5>
+      
+      {% for review in reviews %}
+      <ul>
+        <div class="review" data-post-id="{{ review.id }}">
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
           <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
           <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
           <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>
-          <p>Content: {{ review.content }}</p>
           <p>Rate Heart: {{ review.star_rating }}</p>
           <p>Spending: {{ review.spending }}</p>
           <p>Likes : {{ review.likes }}</p>
         <hr>
+  
       </div>
     </ul>
     {% endfor %}
 
 
+    <!-- pagination -->
+    <div class="pagination">
+      <span class="step-links">
+          {% if reviews.has_previous %}
+          <a href="?page=1">&laquo; First |  </a>
+          <a href="?page={{ reviews.previous_page_number }}">   previous</a>
+          {% endif %}
+        
+          <span class="current">
+              Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
+          </span>
 
-       <!-- pagination -->
-       <div class="pagination">
-        <span class="step-links">
-            {% if reviews.has_previous %}
-            <a href="?page=1">&laquo; First |  </a>
-            <a href="?page={{ reviews.previous_page_number }}">   previous</a>
-            {% endif %}
-  
-            <span class="current">
-                Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
-            </span>
-  
-            {% if context.has_next %}
-            <a href="?page={{ reviews.next_page_number }}">Next |  </a>
-            <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
-            {% endif %}
-        </span>
-      </div>
-
+          {% if context.has_next %}
+          <a href="?page={{ reviews.next_page_number }}">Next |  </a>
+          <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
+          {% endif %}
+      </span>
     </div>
-  </div>
 </div>
-</div>
+
 
 
 

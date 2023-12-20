@@ -115,11 +115,12 @@ def create_review(request):
         content = request.POST["content"]
         spending = request.POST["spending"]
         store_id = request.POST["store_id"]
+        rating = request.POST["star_rating"]
        
         user = request.user
 
         print(request)
-        Review.objects.create(content=content, user=user, spending=spending, store_id=store_id)
+        Review.objects.create(content=content, user=user, spending=spending, store_id=store_id, star_rating=rating)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, 'rate/create_review.html')
@@ -165,7 +166,6 @@ def store_list(request):
 
 
 def store_profile(request, store_id):
-
     store = get_object_or_404(Store, id = store_id)
     print("=================", store)
     reviews = Review.objects.filter(store = store).order_by('-timestamp')
@@ -183,8 +183,6 @@ def store_profile(request, store_id):
         paginated_reviews = paginator.page(paginator.num_pages)
 
     return render(request, 'rate/store_profile.html', { "store": store, 'reviews': paginated_reviews})
-
-
 
 # ================================================
 @login_required

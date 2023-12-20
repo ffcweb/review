@@ -4,14 +4,14 @@
 {% block body %}
 {% block content %}
 
-
-<h1>Category List</h1>
-
+<div class="container-fluid">
+    <hr>
     <ul>
         {% for category in categories %}
-            <li><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
+        <li><a href="{% url 'category_detail' category.id %}">{{ category.name }}</a></li>
         {% endfor %}
     </ul>
+</div>
 
 {% endblock %}
 {% endblock %}

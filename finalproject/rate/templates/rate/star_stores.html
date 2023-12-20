@@ -1,13 +1,16 @@
 <!-- rate/templates/rate/star_stores.html -->
 {% extends "rate/layout.html" %}
-
+{% block body %}
 {% block content %}
   <h2>Star Stores</h2>
   <p>Explore our highly-rated stores:</p>
+
   <ul>
     {% for store in star_stores %}
       <li>{{ store.name }} ({{ store.star_rating }} stars)</li>
-      <!-- Add more details about each store if needed -->
+     
     {% endfor %}
   </ul>
+
+{% endblock %}
 {% endblock %}

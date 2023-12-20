@@ -5,21 +5,20 @@
 {% block content %}
 
 
-<h2>{{ category.name }} Details</h2>
+<div class="container-fluid">
+<h2>{{ category.name }} list</h2>
 
 <p>Number of stores: {{ category.store_set.count }}</p>
 <!-- <p>Image URL: {{ category.image_url }}</p> -->
-<ul>
-
-    <!-- to display a list of the stores name that belong th-->
     <ul>
         {% for store in category.store_categories.all %}
             <li><a href="{% url 'store_profile' store.id %}">{{ store.name }}</a></li>
         {% endfor %}
     </ul>
 
+<hr>
 
 <p><a href="{% url 'category_list' %}">Back to Category List</a></p>
-   
-    {% endblock %}
-    {% endblock %}
+</div>
+{% endblock %}
+{% endblock %}

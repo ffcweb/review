@@ -31,8 +31,6 @@
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
 
-
-
         <!-- ============ update_follow_ui page content ============= -->
         <span id="followersCount">followers : is here  {{ follower_store_pair }}</span> 
 
@@ -72,7 +70,7 @@
 
 
           <div class="form-group">
-            <label for="star_rating">❤️❤️❤️❤️❤️</label>
+            <label for="star_rating">⭐⭐⭐⭐⭐</label>
             <input type="number" class="form-control" id="star_rating" name="star_rating" min="1" max="5 "value="">
           </div>
           
@@ -126,9 +124,13 @@
       {% for review in reviews %}
       <ul>
         <div class="review" data-post-id="{{ review.id }}">
-          <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
+          <!-- <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p>  -->
           <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
-          <p>Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
+          <p class="card-text">Posted by 
+            <a href="{% url 'user_profile' review.user_id %}"> 
+              {{ review.user }} 
+            </a>for <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a> on {{ review.timestamp }} 
+          </p>
           <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>
@@ -137,39 +139,45 @@
           <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->
           <p class="review_rate_stars">{{ review.star_rating }}</p>
           <p>💰{{ review.spending }}</p>
-          <p>Likes : {{ review.likes }}</p>
+
+           <!--  to display the hart to like the reviews -->
+           <div>
+            <span class="like_button" onclick="handleToggleLike({{ review.id }})" style="cursor: pointer">❤️</span>
+            <span id="review_{{ review.id }}_like_count">{{review.like_count}}</span>
+          </div>
+
         <hr>
   
       </div>
     </ul>
     {% endfor %}
 
-
 <!-- pagination -->
 <div class="container">
   <div class="d-flex justify-content-center">
     <div class="pagination">
       <span class="step-links">
-          {% if reviews.has_previous %}
-          <a href="?page=1">&laquo; First |  </a>
-          <a href="?page={{ reviews.previous_page_number }}">   previous</a>
-          {% endif %}
+        {% if reviews.has_previous %}
+        <a href="?page=1">&laquo; First |  </a>
+        <a href="?page={{ reviews.previous_page_number }}">   previous</a>
+        {% endif %}
         
-          <span class="current">
-              Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
-          </span>
-
-          {% if context.has_next %}
-          <a href="?page={{ reviews.next_page_number }}">Next |  </a>
-          <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
-          {% endif %}
+        <span class="current">
+            Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
         </span>
-      </div>
+        {% if context.has_next %}
+        <a href="?page={{ reviews.next_page_number }}">Next |  </a>
+        <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
+        {% endif %}
+      </span>
     </div>
   </div>
+</div>
   
-
+  
 <script src="{% static 'rate/display_stars.js' %}"></script> 
+<script src="{% static 'rate/like_review.js' %}"></script> 
+
 
 {% endblock %}
 

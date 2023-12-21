@@ -9,6 +9,8 @@ from django.db.models import Count
 from django.db.models import Q  # Import Q object for OR conditions
 from django.contrib.auth.decorators import login_required
 
+from django.views.generic.base import View
+from django.http import JsonResponse
 from django.urls import reverse
 # from .forms import ReviewForm
 from django.views.decorators.http import require_POST
@@ -164,6 +166,7 @@ def store_list(request):
         store.average_rating=round(average_rating,1)
         store.review_count= len(reviews)
 
+
     # Use pagination built-in function.
     paginator = Paginator(stores, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -190,6 +193,10 @@ def store_profile(request, store_id):
     store.average_rating=round(average_rating,1)
     store.review_count= len(reviews)
 
+    for review in reviews:
+        likes = LikeReview.objects.filter(review=review)
+        review.like_count = len(likes)
+
     # Use pagination built-in function.
     paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -210,6 +217,12 @@ def user_profile(request, user_id):
     # First, get all the reviews in timestamp order.
     user = get_object_or_404(User, id = user_id)
     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
+   
+    # give the number of the like_count for the user profile page
+    reviews = Review.objects.filter(user=user).order_by('-timestamp')
+    for review in reviews:
+        likes = LikeReview.objects.filter(review=review)
+        review.like_count = len(likes)
 
 # Use pagination built-in function.
     paginator = Paginator(user_reviews, 10)  # Show 10 reviews per page.
@@ -235,9 +248,29 @@ def user_profile(request, user_id):
     # return render(request, 'rate/user_profile.html', { 'reviews': reviews })
 
     # ==============================================
+class UserProfileView(View):
+    template_name = 'user_profile.html'
+
+    def get(self, request, *args, **kwargs):
+        user = UserProfile.objects.get(username='username') 
+        return render(request, self.template_name, {'user': user})
+
+    def post(self, request, *args, **kwargs):
+        user = UserProfile.objects.get(username='username') 
+        new_image_url = request.POST.get('new_image_url')
+
+        if new_image_url:
+            user.image_url = new_image_url
+            user.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Profile image updated successfully'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Invalid image URL'})
+
+
+
 def popular_stores(request):
     return render(request, 'rate/popular_stores.html')  
-
 
     # ==============================================
 def star_stores(request):
@@ -260,7 +293,6 @@ def toggle_follow_store(request, store_id):
 
     follower_store_pair = StoreFollowers.objects.filter(follower=follower, store=store)
     print(follower_store_pair)
-
 
     # if request.method == 'POST':
     #     if storeToFollow in storeFollowers.follower.all():

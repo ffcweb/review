@@ -19,26 +19,31 @@
                 <a href="{% url 'store_profile' review.store.id %}"> 
                   {{ review.store.name }}
                 </a>
-             
             </h4>
-            <p class="review_rate_stars">{{ review.star_rating }}</p>
-           <p>💰{{ review.spending }}</p>
 
+            <p>Content: {{ review.content }}</p>
 
-            <p class="card-text">Content: {{ review.content }}</p>
+            <!-- <p class="card-text">Content: {{ review.content }}</p> -->
             <!-- <div class="alert alert-secondary"><p class="card-text">Content: {{ review.content }}</p></div> -->
             <span hidden><h2> ID : {{ store.id }} </h2></span>
-
+          
             <!-- <p class="card-text">Category: {{ store.category }}</p> -->
             <p class="card-text">Posted by 
               <a href="{% url 'user_profile' review.user_id %}"> 
                 {{ review.user }} 
               </a>for {{ review.store }} on {{ review.timestamp }} 
             </p>
+
+            <p class="review_rate_stars">{{ review.star_rating }}</p>
+
+            <p>💰{{ review.spending }}</p>
+
+            <!--  to display the hart to like the reviews -->
             <div>
               <span class="like_button" onclick="handleToggleLike({{ review.id }})" style="cursor: pointer">❤️</span>
               <span id="review_{{ review.id }}_like_count">{{review.like_count}}</span>
             </div>
+
               <hr>
             {% endfor %}  
           </div>

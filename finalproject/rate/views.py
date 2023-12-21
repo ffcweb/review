@@ -230,55 +230,20 @@ def search_store(request):
     context = {'results': results, 'query': query}
     return render(request, 'rate/search_results.html', context)
 
-# @login_required
-# def toggle_follow_store(request, store_id):
-#     store = get_object_or_404(Store, id=store_id)
-    
-#     # Try to get an existing Store or create a new one if it doesn't exist
-#     store_profile, created = Store.objects.get_or_create(store=store)
-
-#     user = request.user
-
-#     if user in store_profile.following.all():
-#         # User is already following the store, so unfollow it
-#         store_profile.following.remove(user)
-#     else:
-#         # User is not following the store, so follow it
-#         store_profile.following.add(user)
-
-#     # Update followers count
-#     store_profile.followers_count = store_profile.following.count()
-#     store_profile.save()
-
-#     return redirect('store_profile', store_id=store_id)
-
-
-# @login_required
-# def toggle_follow_store(request, store_id):
-#     store = get_object_or_404(Store, id=store_id)
-#     store_profile, created = Store.objects.get_or_create(store=store)
-
-#     if request.method == 'POST':
-#         if request.user in store_profile.following.all():
-#             store_profile.following.remove(request.user)
-#         else:
-#             store_profile.following.add(request.user)
-#         store_profile.save()
-
-#     return JsonResponse({'followers_count': store_profile.followers_count})
-
 
 @login_required
-def toggle_follow(request, username):
-    user_to_follow = get_object_or_404(User, username=username)
-    user_profile = request.user.userprofile
-
-    user_to_follow = get_object_or_404(Store, id=store_id)
+def toggle_follow_store(request, store_id):
+    user_to_follow_store = get_object_or_404(Store, id=store_id)
+    user = request.user
+    
     StoreFollowers = request.store.StoreFollowers
 
-    if user_to_follow in user_profile.followers.all():
-        user_profile.followers.remove(user_to_follow)
-    else:
-        user_profile.followers.add(user_to_follow)
-
-    return JsonResponse({'status': 'success'})
+    if request.method == 'POST':
+        if user_to_follow_store in storeFollowers.follower.all():
+            storeFollowers.follower.remove(user_to_follow)
+        else:
+            storeFollowers.follower.add(user_to_follow)
+            storeFollowers.save()
+            storeFollowers.followers.count()
+            storeFollowers.save()
+    return JsonResponse({'followers_count': StoreFollowers.followers_count})

@@ -23,30 +23,26 @@ class Store(models.Model):
     Joined_date = models.DateTimeField("date Joined")
     address = models.CharField(max_length=400)
     introduction = models.CharField(max_length=400)
-    # closing
     opening_time = models.TimeField()
     closing_time = models.TimeField()
     # category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='stores')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='store_categories')
     image_url = models.URLField(max_length=200, null=True, blank=True, default="")
     link_url = models.URLField(max_length=200, null=True, blank=True)
-    
     # followers: Many-to-Many relationship with User for users following the store.
     followers = models.ManyToManyField(User, related_name='following_stores', blank=True)
-    # followers = models.ManyToManyField('self', symmetrical=False, related_name='following')
-    
     star_rating = models.IntegerField(choices=[(1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')], default=1)    
-   
-    # def average_star_rating(self):
-    #     # Calculate the average star rating based on associated reviews
-    #     average_rating = self.review_set.aggregate(Avg('star_rating'))['star_rating__avg']
-        
-    #     # If there are no reviews, return a default value (e.g., 0)
-    #     return average_rating if average_rating is not None else 0
-
     def __str__(self):
         return self.name
-        
+
+#  has a follwer count and follower id , store id, 
+class StoreFollowers(models.Model):
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    follower = models.ForeignKey(User, on_delete=models.CASCADE)
+    followers_count = models.PositiveIntegerField(default=0)
+    def __str__(self):
+        return f"{self.follower.username} follows {self.store.store.name}"
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -65,20 +61,9 @@ class UserProfile(models.Model):
         return self.user.username
 
 
-#  has a follwer count and follower id , store id, 
-class StoreFollowers(models.Model):
-    store = models.ForeignKey(Store, on_delete=models.CASCADE)
-    follower = models.ForeignKey(User, on_delete=models.CASCADE)
-    followers_count = models.PositiveIntegerField(default=0)
-
-    def __str__(self):
-        return f"{self.follower.username} follows {self.store.store.name}"
-
-
 class FavoriteStore(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
-
     # A user_profile field that references UserProfile with a foreign key. 
     # This ensures that the FavoriteStore model has the required foreign key to UserProfile.
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)

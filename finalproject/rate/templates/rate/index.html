@@ -31,11 +31,8 @@
                 <p class="card-text">Content: {{ review.content }}</p>
                 <!-- <div class="alert alert-secondary"><p class="card-text">Content: {{ review.content }}</p></div> -->
                 <span hidden><h2> ID : {{ store.id }} </h2></span>
-                <!-- <p class="card-text">Category: {{ store.category }}</p> -->
-                <!-- <p class="card-text">Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} </a></p> -->
-                <!-- <p class="card-text">Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </p> -->
-
-                <p class="card-text">Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} </p>
+               
+                <p class="card-text">Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} </p>
                 <hr>
               </div>
             </div>

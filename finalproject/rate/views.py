@@ -268,34 +268,17 @@ def search_store(request):
 #     return JsonResponse({'followers_count': store_profile.followers_count})
 
 
-@require_POST
 @login_required
-def follow_toggle(request, encoded_username):
-    user_to_toggle = get_object_or_404(Store, username=encoded_username)
-    user = request.user
-    
-    if user == user_to_toggle:
-       return JsonResponse({'error': 'You cannot follow yourself.'}, status=400)
+def toggle_follow(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+    user_profile = request.user.userprofile
 
-    # Toggle follow status
-    is_following = False
-    if user.followers.filter(username=user_to_toggle.username).exists():
-        user.followers.remove(user_to_toggle)
-        is_following = False
+    user_to_follow = get_object_or_404(Store, id=store_id)
+    StoreFollowers = request.store.StoreFollowers
+
+    if user_to_follow in user_profile.followers.all():
+        user_profile.followers.remove(user_to_follow)
     else:
-        user.followers.add(user_to_toggle)
-        is_following = True
+        user_profile.followers.add(user_to_follow)
 
-    # Update follower and following counts for both users
-    followers_count = user.followers.count()
-    following_count = user.following.count()
-
-    followers_count = user_to_toggle.followers.count()
-    following_count = user_to_toggle.following.count()
-
-    data = {
-        'followers_count': followers_count,
-        'following_count': following_count,
-        'is_following': is_following,
-    }
-    return JsonResponse(data)
+    return JsonResponse({'status': 'success'})

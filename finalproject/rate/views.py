@@ -3,14 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from statistics import mean
 from django.db import IntegrityError
 from django.db.models import Count
 from django.db.models import Q  # Import Q object for OR conditions
 from django.contrib.auth.decorators import login_required
 
 from django.urls import reverse
-from .forms import ReviewForm
+# from .forms import ReviewForm
 from django.views.decorators.http import require_POST
 from .models import User, Store, Review, UserProfile, FavoriteStore, Category
 from .models import SearchBox, LikeReview, CommentOnReview, StoreFollowers
@@ -149,6 +149,16 @@ def store_list(request):
     stores = Store.objects.all().order_by('-Joined_date')
     # return render(request, 'rate/store_list.html', {'stores': stores})
 
+    for store in stores:
+        reviews = Review.objects.filter(store=store)
+        if len(reviews)>0:
+            average_rating= mean([x.star_rating for x in reviews])
+        else:
+            average_rating=0
+
+        store.average_rating=round(average_rating,1)
+        store.review_count= len(reviews)
+
     # Use pagination built-in function.
     paginator = Paginator(stores, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -233,17 +243,18 @@ def search_store(request):
 
 @login_required
 def toggle_follow_store(request, store_id):
-    user_to_follow_store = get_object_or_404(Store, id=store_id)
+    store_to_follow = get_object_or_404(Store, id=store_id)
     user = request.user
-    
-    StoreFollowers = request.store.StoreFollowers
 
-    if request.method == 'POST':
-        if user_to_follow_store in storeFollowers.follower.all():
-            storeFollowers.follower.remove(user_to_follow)
-        else:
-            storeFollowers.follower.add(user_to_follow)
-            storeFollowers.save()
-            storeFollowers.followers.count()
-            storeFollowers.save()
-    return JsonResponse({'followers_count': StoreFollowers.followers_count})
+    follower_store_pair = StoreFollowers.objects.filter(follower=follower, store=store)
+    print(follower_store_pair)
+
+    # if request.method == 'POST':
+    #     if storeToFollow in storeFollowers.follower.all():
+    #         storeFollowers.follower.remove(storeToFollow)
+    #     else:
+    #         storeFollowers.follower.add(storeToFollow)
+    #         storeFollowers.save()
+    #         storeFollowers.follower.count()
+    #         storeFollowers.save()
+    # return JsonResponse({'follower': StoreFollowers.follower})

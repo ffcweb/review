@@ -25,8 +25,6 @@ urlpatterns = [
     path('user_profile/<int:user_id>/', views.user_profile, name='user_profile'),
 
     path('toggle-follow/<int:store_id>/', toggle_follow_store, name='toggle_follow_store'),
-    # path('toggle-follow/<str:username>/', toggle_follow, name='toggle_follow'),
-
 
     path('popular_stores/', views.popular_stores, name='popular_stores'),
     path('star_stores/', views.star_stores, name='star_stores'),

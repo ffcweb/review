@@ -30,7 +30,7 @@ class Store(models.Model):
     image_url = models.URLField(max_length=200, null=True, blank=True, default="")
     link_url = models.URLField(max_length=200, null=True, blank=True)
     # followers: Many-to-Many relationship with User for users following the store.
-    followers = models.ManyToManyField(User, related_name='following_stores', blank=True)
+    # followers = models.ManyToManyField(User, related_name='following_stores', blank=True)
     star_rating = models.IntegerField(choices=[(1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')], default=1)    
     def __str__(self):
         return self.name
@@ -39,9 +39,9 @@ class Store(models.Model):
 class StoreFollowers(models.Model):
     store = models.ForeignKey(Store, on_delete=models.CASCADE)
     follower = models.ForeignKey(User, on_delete=models.CASCADE)
-    followers_count = models.PositiveIntegerField(default=0)
+    # followers_count = models.PositiveIntegerField(default=0)
     def __str__(self):
-        return f"{self.follower.username} follows {self.store.store.name}"
+        return f"{self.follower.username} follows {self.store.name}"
 
 
 class UserProfile(models.Model):

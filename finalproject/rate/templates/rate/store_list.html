@@ -20,15 +20,19 @@
 
                     <span hidden><h2> ID : {{ store.id }} </h2></span>
 
-                    <p class="card-text">Star Rating:  {{ store.star_rating }}</p>
+                    <!-- Display average star Here -->
+                    <p class="card-text">
+                        <span class=" review_rate_stars">{{ store.average_rating }}</span>
+                        <span>{{ store.average_rating}}</span>
+                        <span>({{ store.review_count}})</span>
+                    </p>
+
+
+                    <!-- =============================== -->
                     <!-- <p class="card-text">Category: {{ store.category }} </p> -->
                     <!-- <p class="card-text">{{ store.introduction }}</p> -->
                     <p class="card-text">Joined Date: {{ store.Joined_date }}</p>
-                    <!-- <p class="card-text">Address: {{ store.address }} </p> -->
-
-                    <!-- <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
-                    <div class="alert alert-secondary"><p>Content: {{ review.content }}</p></div> -->
-                    <!-- <a href="{% url 'store_profile' store.id %}">{{ store.name }}" class="btn btn-primary">See Profile</a> -->
+                  
                 </div>
             </div>
             {% endfor %}
@@ -61,5 +65,7 @@
         </div>
     </div>
 </div>
+
+<script src="{% static 'rate/display_stars.js' %}"></script> 
 
 {% endblock %}

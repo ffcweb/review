@@ -57,7 +57,11 @@
                             <p>Review: {{ review.content }}</p> 
                             <p>Time: {{ review.timestamp }}</p>
                             <p>Content: {{ review.content }}</p>
-                            <p>Rate Heart: {{ review.star_rating }}</p>
+
+                            <!-- <p>Rate Heart: {{ review.star_rating }}</p> -->
+                            <p class="review_rate_stars">{{ review.star_rating }}</p>
+
+                            
                             <p>Spending: {{ review.spending }}</p>
                             <p>Likes : {{ review.likes }}</p>
                         </div>
@@ -92,6 +96,8 @@
       </div>
     </div>
   </div>
+
+  <script src="{% static 'rate/display_stars.js' %}"></script> 
 
 {% endblock %}
 {% endblock %}

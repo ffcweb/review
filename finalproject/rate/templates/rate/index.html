@@ -27,13 +27,18 @@
                 <h4 class="card-title"><p>
                 <a href="{% url 'store_profile' review.store.id %}"> Review on {{ review.store.name }}</a></p> 
               </h4>
-                <p class="card-text">Star Rating: {{ review.star_rating }}</p>
-                <p class="card-text">Content: {{ review.content }}</p>
+
+              <!-- <p>Rate Heart: {{ review.star_rating }}</p> -->
+              <p class="review_rate_stars">{{ review.star_rating }}</p>
+              <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->
+
+
+                <!-- <p class="card-text">Content: {{ review.content }}</p> -->
                 <!-- <div class="alert alert-secondary"><p class="card-text">Content: {{ review.content }}</p></div> -->
                 <span hidden><h2> ID : {{ store.id }} </h2></span>
                
                 <p class="card-text">Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} </p>
-                <hr>
+              
               </div>
             </div>
             {% endfor %}
@@ -67,7 +72,9 @@
   </div>
 </div>
 
-<!-- <script src="{% static 'rate/script.js' %}"></script>  -->
+
+<script src="{% static 'rate/display_stars.js' %}"></script> 
+
 
 {% endblock %}
 {% endblock %}

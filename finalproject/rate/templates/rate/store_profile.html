@@ -126,7 +126,7 @@
         <div class="review" data-post-id="{{ review.id }}">
           <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
           <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
-          <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
+          <p>Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
           <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
           <p>Review: {{ review.content }}</p> 
           <p>Time: {{ review.timestamp }}</p>

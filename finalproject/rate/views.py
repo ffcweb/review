@@ -129,6 +129,9 @@ def create_review(request):
 def all_reviews(request, ):
     reviews = Review.objects.all().order_by('-timestamp')
 
+    # for review in reviews:
+    #     review.store_name = review.store.name
+
     # Use pagination built-in function.
     paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')
@@ -173,7 +176,6 @@ def store_list(request):
 
     return render(request, 'rate/store_list.html', { 'stores': paginated_stores})
 
-
 def store_profile(request, store_id):
     store = get_object_or_404(Store, id = store_id)
     print("=================", store)
@@ -202,7 +204,7 @@ def store_profile(request, store_id):
     return render(request, 'rate/store_profile.html', { "store": store, 'reviews': paginated_reviews})
 
 # ================================================
-@login_required
+
 def user_profile(request, user_id):
   
     # First, get all the reviews in timestamp order.
@@ -266,3 +268,37 @@ def toggle_follow_store(request, store_id):
     #         storeFollowers.follower.count()
     #         storeFollowers.save()
     # return JsonResponse({'follower': StoreFollowers.follower})
+
+
+
+@require_POST
+@login_required
+def follow_toggle(request, encoded_username):
+    user_to_toggle = get_object_or_404(User, username=encoded_username)
+    user_profile = request.user
+
+    if user_profile == user_to_toggle:
+       return JsonResponse({'error': 'You cannot follow yourself.'}, status=400)
+
+    # Toggle follow status
+    is_following = False
+    if user_profile.followers.filter(username=user_to_toggle.username).exists():
+        user_profile.followers.remove(user_to_toggle)
+        is_following = False
+    else:
+        user_profile.followers.add(user_to_toggle)
+        is_following = True
+
+    # Update follower and following counts for both users
+    followers_count = user_profile.followers.count()
+    following_count = user_profile.following.count()
+
+    followers_count = user_to_toggle.followers.count()
+    following_count = user_to_toggle.following.count()
+
+    data = {
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
+    }
+    return JsonResponse(data)

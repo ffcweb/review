@@ -49,7 +49,7 @@ class UserProfile(models.Model):
     introduction = models.CharField(max_length=400)
     joined_date = models.DateTimeField("Joined Date", auto_now_add=True)
     address = models.CharField(max_length=200, null=True, blank=True)
-    image_url = models.URLField(max_length=200, null=True, blank=True)
+    image_url = models.URLField(max_length=200, null=True, blank=True, default="https://cdn4.iconfinder.com/data/icons/music-ui-solid-24px/24/user_account_profile-2-512.png")
     link_url = models.URLField(max_length=200, null=True, blank=True)
 
 # UserProfile has fields following and followers, allowing a user to follow other users.

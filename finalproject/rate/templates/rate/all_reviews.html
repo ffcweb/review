@@ -14,16 +14,31 @@
             <h5 class="mt-0"></h5>
             {% for review in reviews %}
             <img src="{{ review.image_url }}" class="float-left" alt="iamge" width="60" height="60">
-            <h4 class="card-title"><p>
-              <a href="{% url 'store_profile' review.store.id %}"> Review on
-              {{ review.store.name }}</a></p> 
+            <h4 class="card-title">
+             
+                <a href="{% url 'store_profile' review.store.id %}"> 
+                  {{ review.store.name }}
+                </a>
+             
             </h4>
             <p class="review_rate_stars">{{ review.star_rating }}</p>
+           <p>💰{{ review.spending }}</p>
+
+
             <p class="card-text">Content: {{ review.content }}</p>
             <!-- <div class="alert alert-secondary"><p class="card-text">Content: {{ review.content }}</p></div> -->
             <span hidden><h2> ID : {{ store.id }} </h2></span>
+
             <!-- <p class="card-text">Category: {{ store.category }}</p> -->
-            <p class="card-text">Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </p>
+            <p class="card-text">Posted by 
+              <a href="{% url 'user_profile' review.user_id %}"> 
+                {{ review.user }} 
+              </a>for {{ review.store }} on {{ review.timestamp }} 
+            </p>
+            <div>
+              <span class="like_button" onclick="handleToggleLike({{ review.id }})" style="cursor: pointer">❤️</span>
+              <span id="review_{{ review.id }}_like_count">{{review.like_count}}</span>
+            </div>
               <hr>
             {% endfor %}  
           </div>
@@ -57,6 +72,7 @@
 </div>
 
 <script src="{% static 'rate/display_stars.js' %}"></script> 
+<script src="{% static 'rate/like_review.js' %}"></script> 
 
 {% endblock %}
 {% endblock %}

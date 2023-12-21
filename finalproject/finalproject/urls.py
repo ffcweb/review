@@ -20,7 +20,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # path("", include("rate.urls")),
 
-
     path('rate/', include('rate.urls')),
     # Now, you should be able to access the reviews view at 
     # the URL http://yourdomain.com/rate/reviews/. 

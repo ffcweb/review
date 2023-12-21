@@ -129,8 +129,10 @@ def create_review(request):
 def all_reviews(request, ):
     reviews = Review.objects.all().order_by('-timestamp')
 
-    # for review in reviews:
-    #     review.store_name = review.store.name
+    for review in reviews:
+        likes = LikeReview.objects.filter(review=review)
+        review.like_count = len(likes)
+
 
     # Use pagination built-in function.
     paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
@@ -178,7 +180,6 @@ def store_list(request):
 
 def store_profile(request, store_id):
     store = get_object_or_404(Store, id = store_id)
-    print("=================", store)
     reviews = Review.objects.filter(store = store).order_by('-timestamp')
 
     if len(reviews)>0:
@@ -206,7 +207,6 @@ def store_profile(request, store_id):
 # ================================================
 
 def user_profile(request, user_id):
-  
     # First, get all the reviews in timestamp order.
     user = get_object_or_404(User, id = user_id)
     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
@@ -229,8 +229,10 @@ def user_profile(request, user_id):
         'paginated_user_reviews':paginated_user_reviews
     }
     print(context)
-    # return render(request, 'rate/user_profile.html', context)
     return render(request, 'rate/user_profile.html', context)
+
+    # return render(request, 'rate/store_profile.html', { "user": user, 'reviews': paginated_reviews})
+    # return render(request, 'rate/user_profile.html', { 'reviews': reviews })
 
     # ==============================================
 def popular_stores(request):
@@ -259,6 +261,7 @@ def toggle_follow_store(request, store_id):
     follower_store_pair = StoreFollowers.objects.filter(follower=follower, store=store)
     print(follower_store_pair)
 
+
     # if request.method == 'POST':
     #     if storeToFollow in storeFollowers.follower.all():
     #         storeFollowers.follower.remove(storeToFollow)
@@ -270,35 +273,33 @@ def toggle_follow_store(request, store_id):
     # return JsonResponse({'follower': StoreFollowers.follower})
 
 
-
+# Review_id :is from the urls.py 
 @require_POST
 @login_required
-def follow_toggle(request, encoded_username):
-    user_to_toggle = get_object_or_404(User, username=encoded_username)
-    user_profile = request.user
+def toggle_like(request,review_id):
+    user= request.user
+    user_reivew_pair=LikeReview.objects.filter(
+        user=user, review_id=review_id
+    )
 
-    if user_profile == user_to_toggle:
-       return JsonResponse({'error': 'You cannot follow yourself.'}, status=400)
-
-    # Toggle follow status
-    is_following = False
-    if user_profile.followers.filter(username=user_to_toggle.username).exists():
-        user_profile.followers.remove(user_to_toggle)
-        is_following = False
+    if user_reivew_pair.exists():
+        # the pair above exists then delete the data.
+        user_reivew_pair.delete()
     else:
-        user_profile.followers.add(user_to_toggle)
-        is_following = True
+        # else add a new recored in LikeReview table.
+        LikeReview.objects.create(user=user,review_id=review_id)
 
-    # Update follower and following counts for both users
-    followers_count = user_profile.followers.count()
-    following_count = user_profile.following.count()
+    # filter the new added recored 
+    likes = LikeReview.objects.filter(review_id=review_id)
 
-    followers_count = user_to_toggle.followers.count()
-    following_count = user_to_toggle.following.count()
+    #  count the number of likes fot this review ID, including the one just added.
+    new_like_count = len(likes)
 
-    data = {
-        'followers_count': followers_count,
-        'following_count': following_count,
-        'is_following': is_following,
+    # return these data to the front-end
+    data ={
+        'review_id':review_id,
+        'new_like_count':new_like_count,
     }
     return JsonResponse(data)
+       
+

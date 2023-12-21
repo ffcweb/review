@@ -15,7 +15,7 @@
       <div class="card-body">
         <h2>{{ store.name }}'s Profile</h2>
         <span hidden><h2> ID : {{ store.id }} </h2></span>
-        <img src="{{ store.image_url }}" alt="iamge" width="150">
+        <img src="{{ store.image_url }}" alt="iamge" width="100" height="100">">
         <!-- <p>Category: {{ store.category }}</p> -->
         <p>Joined Date: {{ store.Joined_date }}</p>
 
@@ -82,7 +82,7 @@
             <span class="input-group-text">$</span>
           </div>
           <!-- <div class="form-group"> -->
-            <label for="spending"> </label>
+            <label for="spending">  </label>
             <input type="number" class="form-control" id="spending" name="spending" min="1.00" step="1.00" value="0.00" aria-label="Amount (to the nearest dollar)">
           </div>
           
@@ -136,7 +136,7 @@
           <!-- Display stars  -->
           <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->
           <p class="review_rate_stars">{{ review.star_rating }}</p>
-          <p>Spending: {{ review.spending }}</p>
+          <p>💰{{ review.spending }}</p>
           <p>Likes : {{ review.likes }}</p>
         <hr>
   
@@ -145,7 +145,9 @@
     {% endfor %}
 
 
-    <!-- pagination -->
+<!-- pagination -->
+<div class="container">
+  <div class="d-flex justify-content-center">
     <div class="pagination">
       <span class="step-links">
           {% if reviews.has_previous %}
@@ -161,9 +163,11 @@
           <a href="?page={{ reviews.next_page_number }}">Next |  </a>
           <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
           {% endif %}
-      </span>
+        </span>
+      </div>
     </div>
-</div>
+  </div>
+  
 
 <script src="{% static 'rate/display_stars.js' %}"></script> 
 

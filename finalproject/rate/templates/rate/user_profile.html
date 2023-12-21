@@ -9,11 +9,13 @@
     <div class="store-container">
         <div class="card">
             <div class="card-body">
+
                 <h2><a href="{% url 'user_profile' user_id=user.id %}">{{ user.username }} 's Profile</a></h2>
-                <p></p>
+
                 <div class="card" style="width:700px">
                     <div class="review" data-post-id="{{ review.id }}">
-                        <img class="card-img-top" src="{{ UserProfile.image_url }}" alt="Card image" style="width:100">
+
+                        <img class="card-img-top" src="{{ user.image_url }}" alt="Card image" style="width:100">
                 
                         <div class="card-body">
                             <h4 class="card-title">{{ user.username }}</h4>
@@ -31,13 +33,6 @@
     <hr>
     <br>
 
-        <!-- <div class="review" data-post-id="{{ review.id }}">
-        <a href="{% url 'user_profile' user_id=user.id %}">{{ user.username }} </a>
-        <img src="{{ user.image_url }}" alt="iamge">
-        <p>Joined Date: {{ user.date_joined }}</p>
-        <p>Address: {{ user.email }}</p>
-         -->
-        
 <!-- ============================= -->
 <!--  Display all the posts from this user -->
 <div class="container-fluid">
@@ -51,9 +46,11 @@
                     <ul>
                         <div class="reviews" data-post-id="{{ review.id }}">
                             <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
-                            <p>Posted by {{ review.user }} on {{ review.timestamp }}</p>
+              
                             <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p>
+                            
                             <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
+
                             <p>Review: {{ review.content }}</p> 
                             <p>Time: {{ review.timestamp }}</p>
                             <p>Content: {{ review.content }}</p>
@@ -62,7 +59,7 @@
                             <p class="review_rate_stars">{{ review.star_rating }}</p>
 
                             
-                            <p>Spending: {{ review.spending }}</p>
+                            <p>💰 {{ review.spending }}</p>
                             <p>Likes : {{ review.likes }}</p>
                         </div>
                     </ul>
@@ -73,6 +70,7 @@
         </div> 
     </div>
 </div>
+
 
 <!-- pagination -->
 <div class="container">
@@ -88,16 +86,17 @@
                 Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
             </span>
   
-            {% if reviews.has_next %}
+            {% if context.has_next %}
             <a href="?page={{ reviews.next_page_number }}">Next |  </a>
             <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
             {% endif %}
         </span>
-      </div>
     </div>
   </div>
+</div>
 
-  <script src="{% static 'rate/display_stars.js' %}"></script> 
+
+<script src="{% static 'rate/display_stars.js' %}"></script> 
 
 {% endblock %}
 {% endblock %}

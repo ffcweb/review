@@ -68,10 +68,16 @@
             <a class="nav-link" href="{% url 'user_profile' user_id=user.id %}">Profile</a>
           </li>
 
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <!-- <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form> -->
+
+          <form class="form-inline my-2 my-lg-0" action="{% url 'search_store' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
+        </form>
+
 
           <li class="nav-item">
               <a class="nav-link" href="{% url 'store_list' %}">All stores</a>
@@ -86,6 +92,11 @@
           </li>
 
           <li class="nav-item">
+            <a class="nav-link" href="{% url 'search_store' %}">search_results</a>
+          </li>
+
+
+          <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">Log out</a>
           </li>
           </ul>
@@ -96,11 +107,16 @@
               <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only">(current)</span></a>
           </li>
 
-          <form class="form-inline my-2 my-lg-0">
+          <!-- <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
+          </form> -->
 
+      
+          <form class="form-inline my-2 my-lg-0" action="{% url 'search_store' %}" method="get">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
           <li class="nav-item">
               <a class="nav-link" href="{% url 'store_list' %}">All stores</a>
           </li>

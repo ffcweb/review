@@ -1,20 +1,19 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db import IntegrityError
-from django.views.decorators.http import require_POST
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import User, Store, Follow, StoreProfile, UserProfile, FavoriteStore, StoreFollowers
-from .models import Review, LikeReview, CommentOnReview
-from django.urls import reverse
-from django.db.models import Count
-from .forms import ReviewForm
-from .models import Store, Review
-from .models import Category
 
+from django.db import IntegrityError
+from django.db.models import Count
+from django.db.models import Q  # Import Q object for OR conditions
+from django.contrib.auth.decorators import login_required
+
+from django.urls import reverse
+from .forms import ReviewForm
+from django.views.decorators.http import require_POST
+from .models import User, Store, Review, UserProfile, FavoriteStore, Category
+from .models import SearchBox, LikeReview, CommentOnReview, StoreFollowers
 
 
 def index(request):
@@ -213,7 +212,6 @@ def user_profile(request, user_id):
     # return render(request, 'rate/user_profile.html', context)
     return render(request, 'rate/user_profile.html', context)
 
-
     # ==============================================
 def popular_stores(request):
     return render(request, 'rate/popular_stores.html')  
@@ -224,3 +222,80 @@ def star_stores(request):
     return render(request, 'rate/star_stores.html')  
     # ==============================================
 
+
+def search_store(request):
+    query = request.GET.get('q', '')
+    results = SearchBox.objects.filter(store_name__icontains=query)
+    
+    context = {'results': results, 'query': query}
+    return render(request, 'rate/search_results.html', context)
+
+# @login_required
+# def toggle_follow_store(request, store_id):
+#     store = get_object_or_404(Store, id=store_id)
+    
+#     # Try to get an existing Store or create a new one if it doesn't exist
+#     store_profile, created = Store.objects.get_or_create(store=store)
+
+#     user = request.user
+
+#     if user in store_profile.following.all():
+#         # User is already following the store, so unfollow it
+#         store_profile.following.remove(user)
+#     else:
+#         # User is not following the store, so follow it
+#         store_profile.following.add(user)
+
+#     # Update followers count
+#     store_profile.followers_count = store_profile.following.count()
+#     store_profile.save()
+
+#     return redirect('store_profile', store_id=store_id)
+
+
+# @login_required
+# def toggle_follow_store(request, store_id):
+#     store = get_object_or_404(Store, id=store_id)
+#     store_profile, created = Store.objects.get_or_create(store=store)
+
+#     if request.method == 'POST':
+#         if request.user in store_profile.following.all():
+#             store_profile.following.remove(request.user)
+#         else:
+#             store_profile.following.add(request.user)
+#         store_profile.save()
+
+#     return JsonResponse({'followers_count': store_profile.followers_count})
+
+
+@require_POST
+@login_required
+def follow_toggle(request, encoded_username):
+    user_to_toggle = get_object_or_404(Store, username=encoded_username)
+    user = request.user
+    
+    if user == user_to_toggle:
+       return JsonResponse({'error': 'You cannot follow yourself.'}, status=400)
+
+    # Toggle follow status
+    is_following = False
+    if user.followers.filter(username=user_to_toggle.username).exists():
+        user.followers.remove(user_to_toggle)
+        is_following = False
+    else:
+        user.followers.add(user_to_toggle)
+        is_following = True
+
+    # Update follower and following counts for both users
+    followers_count = user.followers.count()
+    following_count = user.following.count()
+
+    followers_count = user_to_toggle.followers.count()
+    following_count = user_to_toggle.following.count()
+
+    data = {
+        'followers_count': followers_count,
+        'following_count': following_count,
+        'is_following': is_following,
+    }
+    return JsonResponse(data)

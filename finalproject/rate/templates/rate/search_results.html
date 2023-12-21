@@ -1,0 +1,35 @@
+{% extends 'rate/layout.html' %}
+<!-- search_results.html -->
+{% load static %}
+
+{% block body %}
+{% block content %}
+
+<h2>Search Results for "{{ query }}"</h2>
+{% if results %}
+    <ul>
+        {% for result in results %}
+            <li>{{ result.title }} - {{ result.description }} - {{ result.store_name }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
+
+
+<!-- Display Search Results from SearchBox model -->
+<h3>Search Results:</h3>
+{% for result in search_results %}
+    <p>{{ result.title }} - {{ result.description }}</p>
+{% endfor %}
+
+<!-- Display Store Results -->
+<h3>Store Results:</h3>
+{% for store in stores %}
+    <p>{{ store.name }} - {{ store.category }}</p>
+    <!-- Add more store details as needed -->
+{% endfor %}
+
+
+{% endblock %}
+{% endblock %}

@@ -1,7 +1,13 @@
 <!-- rate/templates/rate/store_profile.html -->
 {% extends "rate/layout.html" %}
 
+{% load static %}
+
 {% block body %}
+
+<!-- Place script inside the body tag -->
+<script src="{% static 'network/script.js' %}"></script>
+
 {% block content %}
 
 <div class="container-fluid">
@@ -19,6 +25,16 @@
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
         <p>Average Star average_rating: {{ store.average_rating }}</p>
+
+        <!-- ========================= -->
+        <!--update_follow_ui page content -->
+        <span id="followersCount">followers : {{ followers_count }}</span> 
+<!-- ================================================================================ -->
+        <ul>
+          {% for follower in store_profile.following.all %}
+            <li><a href="{% url 'user_profile' user_id=follower.id %}">{{ follower.username }}</a></li>
+          {% endfor %}
+        </ul>
       </div>
     </div>
   </div>

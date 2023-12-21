@@ -6,7 +6,6 @@
 {% block body %}
 
 <!-- Place script inside the body tag -->
-<script src="{% static 'rate/script.js' %}"></script>
 
 {% block content %}
 
@@ -16,15 +15,24 @@
       <div class="card-body">
         <h2>{{ store.name }}'s Profile</h2>
         <span hidden><h2> ID : {{ store.id }} </h2></span>
-        <img src="{{ store.image_url }}" alt="iamge">
-        <p>Category: {{ store.category }}</p>
-        <p>Star: {{ store.star_rating }}</p>
+        <img src="{{ store.image_url }}" alt="iamge" width="150">
+        <!-- <p>Category: {{ store.category }}</p> -->
         <p>Joined Date: {{ store.Joined_date }}</p>
+
+
+         <!-- Display average star Here -->
+         <p class="card-text">
+          <span class=" review_rate_stars">{{ store.average_rating }}</span>
+          <span>{{ store.average_rating}}</span>
+          <span>({{ store.review_count}})</span>
+        </p>
+
+
         <p>Address: {{ store.address }}</p>
         <p>Introduction:  {{ store.introduction }}</p>
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
-        <p>Average Star average_rating: {{ store.average_rating }}</p>
+
 
 
         <!-- ============ update_follow_ui page content ============= -->

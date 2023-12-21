@@ -19,7 +19,6 @@
               {{ review.store.name }}</a></p> 
             </h4>
 
-
             <!-- Display stars  -->
             <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->
             <p class="review_rate_stars">{{ review.star_rating }}</p>
@@ -30,7 +29,7 @@
             <span hidden><h2> ID : {{ store.id }} </h2></span>
             <!-- <p class="card-text">Category: {{ store.category }}</p> -->
             <!-- <p class="card-text">Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} </a></p> -->
-            <p class="card-text">Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </p>
+            <p class="card-text">Posted by <a href="{% url 'user_profile' review.user_id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </p>
               <hr>
             {% endfor %}  
           </div>

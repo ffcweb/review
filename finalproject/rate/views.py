@@ -179,6 +179,14 @@ def store_profile(request, store_id):
     print("=================", store)
     reviews = Review.objects.filter(store = store).order_by('-timestamp')
 
+    if len(reviews)>0:
+        average_rating= mean([x.star_rating for x in reviews])
+    else:
+        average_rating=0
+
+    store.average_rating=round(average_rating,1)
+    store.review_count= len(reviews)
+
     # Use pagination built-in function.
     paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
     page = request.GET.get('page')

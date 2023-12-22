@@ -101,8 +101,8 @@
               class="form-control"
               id="star_rating"
               name="star_rating"
-              min="1"
-              max="5 "
+              min=1
+              max=5
               value=""
             />
           </div>
@@ -178,6 +178,12 @@
         {% for review in reviews %}
         <ul>
           <div class="review" data-post-id="{{ review.id }}">
+             <img
+             src="{{ user.image_url }}"
+             alt="image"
+             width="20"
+             height="20"
+           />
             <!-- <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p>  -->
             <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
             <p class="card-text">
@@ -190,9 +196,10 @@
               >
               on {{ review.timestamp }}
             </p>
-            <!-- <img src="{{ review.image_url }}" alt="iamge"> -->
+           
             <p>Review: {{ review.content }}</p>
-            <p>Time: {{ review.timestamp }}</p>
+            <!-- <p>Time: {{ review.timestamp }}</p> -->
+            <img src="{{ review.image_url }}" alt="iamge" width="100" height="100">
 
             <!-- Display stars  -->
             <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->

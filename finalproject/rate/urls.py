@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import all_reviews, category_list,category_detail
 from .views import search_store, toggle_follow_store,toggle_like
-from .views import user_profile
+from .views import user_profile,update_user_image
 from . import views
 
 
@@ -26,8 +26,11 @@ urlpatterns = [
     path('create_review/', views.create_review, name='create_review'),
 
     path('user_profile/<int:user_id>/', views.user_profile, name='user_profile'),
-    
 
+
+    path('update_user_image/', update_user_image, name='update_user_image'),
+
+    
     path('toggle_follow/<int:store_id>/', toggle_follow_store, name='toggle_follow_store'),
     path('toggle_like/<int:review_id>/', toggle_like, name='toggle_like'),
 

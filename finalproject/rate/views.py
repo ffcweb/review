@@ -120,14 +120,21 @@ def create_review(request):
         print(request.POST)  # Add this line to print the POST data
 
         content = request.POST["content"]
+        if content == '':
+            content = "My reviews is empty"
+
+
         spending = request.POST["spending"]
         store_id = request.POST["store_id"]
         rating = request.POST["star_rating"]
+        image_url = request.POST['image_url']
+        if image_url == '':
+            image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBp_jLbdg8HuM0rkuzxlGxfyB8cswrmAlFVUHdXckCgfEk4HH-Jj-HnTU4Mnu8T0VYMxc&usqp=CAU"
        
         user = request.user
 
         print(request)
-        Review.objects.create(content=content, user=user, spending=spending, store_id=store_id, star_rating=rating)
+        Review.objects.create(content=content, user=user, spending=spending, image_url=image_url,store_id=store_id, star_rating=rating)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, 'rate/create_review.html')
@@ -325,6 +332,23 @@ def user_profile(request, user_id):
 
     return render(request, 'rate/user_profile.html', context)
     # ==============================================
+
+@require_POST
+@login_required
+def update_user_image(request):
+    user= request.user
+    new_image_url= request.POST['newImageUrl']
+
+    # update the database
+    user.image_url = new_image_url
+    user.save()
+
+    data= {
+        'status':'success',
+        'new_image_url':new_image_url,
+        'message':f'Updated user image url to {new_image_url}'
+    }
+    return JsonResponse(data)
 
 
 def popular_stores(request):

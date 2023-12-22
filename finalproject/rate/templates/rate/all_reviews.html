@@ -1,9 +1,5 @@
 <!-- rate/templates/rate/all_reviews.html -->
-{% extends "rate/layout.html" %}
-
-{% load static %}
-
-{% block body %}
+{% extends "rate/layout.html" %} {% load static %} {% block body %} 
 {% block content %}
 <div class="container-fluid">
   <div class="store-container">
@@ -13,26 +9,42 @@
           <div class="media-body">
             <h5 class="mt-0"></h5>
             {% for review in reviews %}
-            <img src="{{ review.image_url }}" class="float-left" alt="iamge" width="60" height="60">
+            <!-- <img
+              src="{{ review.image_url }}"
+              class="float-left"
+              alt="iamge"
+              width="60"
+              height="60"
+            />
             <h4 class="card-title">
-             
-                <a href="{% url 'store_profile' review.store.id %}"> 
-                  {{ review.store.name }}
-                </a>
-            </h4>
-
-            <p>Content: {{ review.content }}</p>
+              <a href="{% url 'store_profile' review.store.id %}">
+                {{ review.store.name }}
+              </a>
+            </h4> -->
 
             <!-- <p class="card-text">Content: {{ review.content }}</p> -->
             <!-- <div class="alert alert-secondary"><p class="card-text">Content: {{ review.content }}</p></div> -->
-            <span hidden><h2> ID : {{ store.id }} </h2></span>
-          
+            <span hidden><h2>ID : {{ store.id }}</h2></span>
+
+            <!--  user's profile image -->
+            <img
+              src="{{ user.image_url }}"
+              alt="image"
+              width="100"
+              height="100"
+            />
+
             <!-- <p class="card-text">Category: {{ store.category }}</p> -->
+          
+
             <p class="card-text">Posted by 
               <a href="{% url 'user_profile' review.user_id %}"> 
                 {{ review.user }} 
-              </a>for {{ review.store }} on {{ review.timestamp }} 
+              </a>for <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a> on {{ review.timestamp }} 
             </p>
+
+
+            <p>Content: {{ review.content }}</p>
 
             <p class="review_rate_stars">{{ review.star_rating }}</p>
 
@@ -40,12 +52,19 @@
 
             <!--  to display the hart to like the reviews -->
             <div>
-              <span class="like_button" onclick="handleToggleLike({{ review.id }})" style="cursor: pointer">❤️</span>
-              <span id="review_{{ review.id }}_like_count">{{review.like_count}}</span>
+              <span
+                class="like_button"
+                onclick="handleToggleLike({{ review.id }})"
+                style="cursor: pointer"
+                >❤️</span
+              >
+              <span id="review_{{ review.id }}_like_count"
+                >{{review.like_count}}</span
+              >
             </div>
 
-              <hr>
-            {% endfor %}  
+            <hr />
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -58,27 +77,25 @@
   <div class="d-flex justify-content-center">
     <div class="pagination">
       <span class="step-links">
-          {% if reviews.has_previous %}
-          <a href="?page=1">&laquo; First |  </a>
-          <a href="?page={{ reviews.previous_page_number }}">   previous</a>
-          {% endif %}
+        {% if reviews.has_previous %}
+        <a href="?page=1">&laquo; First | </a>
+        <a href="?page={{ reviews.previous_page_number }}"> previous</a>
+        {% endif %}
 
-          <span class="current">
-              Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
-          </span>
+        <span class="current">
+          Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
+        </span>
 
-          {% if reviews.has_next %}
-          <a href="?page={{ reviews.next_page_number }}">Next |  </a>
-          <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
-          {% endif %}
+        {% if reviews.has_next %}
+        <a href="?page={{ reviews.next_page_number }}">Next | </a>
+        <a href="?page={{ reviews.paginator.num_pages }}"> Last &raquo;</a>
+        {% endif %}
       </span>
     </div>
   </div>
 </div>
 
-<script src="{% static 'rate/display_stars.js' %}"></script> 
-<script src="{% static 'rate/like_review.js' %}"></script> 
+<script src="{% static 'rate/display_stars.js' %}"></script>
+<script src="{% static 'rate/like_review.js' %}"></script>
 
-{% endblock %}
-{% endblock %}
-
+{% endblock %} {% endblock %}

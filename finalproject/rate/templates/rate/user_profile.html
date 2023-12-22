@@ -22,17 +22,17 @@
                 <div class="review" data-post-id="{{ review.id }}">
                     <img src="{{ user.image_url }}" alt="image" width="100" height="100">
 
-                    <h1>{{ user.username }}'s' Profile</h1>
+                    <h2>{{ user.username }}'s' Profile</h2>
                     <p>Current Profile Image: {{ user.image_url }}</p>
-                    
+<!--                     
                     <form id="updateProfileForm" method="post">
-                        {% csrf_token %}
+                        {% csrf_token %} -->
                         <label for="newImageUrl">New Image URL:</label>
                         <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
-                        <button type="submit" onclick="updateProfileImage()">Update Profile Image</button>
-                        <div id="loadingSpinner">Updating...</div>
-                    </form> 
-                        
+                        <button onclick="updateProfileImage()">Update Profile Image</button>
+                        <!-- <div id="loadingSpinner">.</div> -->
+                    <!-- </form> 
+                         -->
                     
                         <div class="card-body">
                             <h4 class="card-title">{{ user.username }}</h4>
@@ -69,10 +69,11 @@
                                   {{ review.user }} 
                                 </a>for <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a> on {{ review.timestamp }} 
                               </p>
-                            <img src="{{ user.image_url }}" alt="iamge">
+
+                              <img src="{{ user.image_url }}" alt="image" width="20" height="20">
 
                             <!-- <p>Review: {{ review.content }}</p>  -->
-                            <p>Time: {{ review.timestamp }}</p>
+                            <!-- <p>Time: {{ review.timestamp }}</p> -->
                             <p>Content: {{ review.content }}</p>
 
                             <!-- <p>Rate Heart: {{ review.star_rating }}</p> -->

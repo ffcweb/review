@@ -10,7 +10,6 @@ class User(AbstractUser):
     introduction = models.CharField(max_length=200,default='My introduction')
     image_url = models.URLField(default='https://cdn4.iconfinder.com/data/icons/music-ui-solid-24px/24/user_account_profile-2-512.png')
 
-
 class Category(models.Model):
     name = models.CharField(max_length=50, unique=True)
     stores = models.ManyToManyField('Store', related_name='categories')
@@ -80,7 +79,7 @@ class Review(models.Model):
     content = models.TextField(max_length=500)
     spending = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
-    image_url = models.URLField(max_length=200, null=True, blank=True)
+    image_url = models.URLField(max_length=500, null=True, blank=True)
     link_url = models.URLField(max_length=200, null=True, blank=True)
     likes = models.PositiveIntegerField(default=0)
     star_rating = models.IntegerField(choices=[(1, '1 star'), (2, '2 stars'), (3, '3 stars'), (4, '4 stars'), (5, '5 stars')], default=1)

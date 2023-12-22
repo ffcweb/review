@@ -28,101 +28,113 @@
     
     <body>
       <header>
-        <title>
-          <!--header content, including the logo --> 
+        <!-- <title>
           <div id="logo">
-            <img src="{% static 'rate/images/Logo.jpeg' %}" alt="Logo">
+            <img src="{% static 'rate/images/reviewLogo.png' %}" alt="Logo">
           </div>
-        </title>
+        </title> -->
       
         
-          <!-- <div class="store-container">
-            {% if user.is_authenticated %}
-            <div class="alert alert-success" role="alert" href="#"><p class="mb-0">Well done! You have signe in as : {{ user.username }}</p></div>
-            <img src="{{ user.image_url }}" alt="image" width="25" height="25">
-            {% endif %}
-          </div>
-   -->
-        <!-- Navigation menu, etc. -->
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-          <a class="navbar-brand" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBp_jLbdg8HuM0rkuzxlGxfyB8cswrmAlFVUHdXckCgfEk4HH-Jj-HnTU4Mnu8T0VYMxc&usqp=CAU"></a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <!-- <div class="store-container">
+          {% if user.is_authenticated %}
+          <div class="alert alert-success" role="alert" href="#"><p class="mb-0">Well done! You have signe in as : {{ user.username }}</p></div>
+          <img src="{{ user.image_url }}" alt="image" width="25" height="25">
+          {% endif %}
+        </div>
+  -->
+      <!-- Navigation menu, etc. -->
+      <!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        <a class="navbar-brand" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBp_jLbdg8HuM0rkuzxlGxfyB8cswrmAlFVUHdXckCgfEk4HH-Jj-HnTU4Mnu8T0VYMxc&usqp=CAU"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span> -->
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" >
+              <span> Review </span>
+              <!-- <img src="/review/finalproject/rate/static/rate/images/reviewLogo.png" 
+              alt="Review" width="50" height="50"> -->
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" 
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                  
+                  <li class="nav-item">
 
-              {% if user.is_authenticated %}
-              <!-- <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-              </form> -->
+                  {% if user.is_authenticated %}
+                
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only">(current)</span></a>
+                  </li>
 
-              <form class="form-inline my-2 my-lg-0" action="{% url 'search_store' %}" 
-              method="get">
-                <input class="form-control mr-sm-2" type="search" 
-                placeholder="Search" aria-label="Search" name="q">
-                <button class="btn btn-outline-success my-2 my-sm-0" 
-                type="submit">Search</button>
-              </form>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'user_profile' user_id=user.id %}">Profile</a>
+                  </li>
 
-              <!-- <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" 
-                placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" 
-                type="submit">Search</button>
-              </form> -->
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'store_list' %}">Stores</a>
+                  </li>
 
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only">(current)</span></a>
-              </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'all_reviews' %}">Reviews</a>
+                  </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'user_profile' user_id=user.id %}">Profile</a>
-              </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_list' %}">Category</a>
+                  </li>
 
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'store_list' %}">Stores</a>
-              </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                  </li>
 
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'all_reviews' %}">Reviews</a>
-              </li>
+                  &nbsp;
+                  &nbsp;
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'category_list' %}">Category</a>
-              </li>
-              <!-- <li class="nav-item">
-                <a class="nav-link" href="{% url 'search_store' %}">search_results</a>
-              </li> -->
+                  <form class="form-inline my-2 my-lg-0" style="position: absolute; right: 10%" action="{% url 'search_store' %}" 
+                  method="get">
+                    <input class="form-control mr-sm-2" type="search" 
+                    placeholder="Search" aria-label="Search" name="q">
+                    <button class="btn btn-outline-success my-2 my-sm-0" 
+                    type="submit">Search</button>
+                  </form>
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-              </li>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
 
-              <div class="loggedInFo"><p class="mb-0" style="color:aliceblue">{{ user.username }}</p></div>
+                  <div class="loggedInFo" style="position: absolute; right: 3%">
+                    <!-- <p class="mb-0" style="color:aliceblue">{{ user.username }}</p> -->
+                    <img src="{{ user.image_url }}" alt="image" width="45" height="45">
+                  </div>
 
-              <img src="{{ user.image_url }}" alt="image" width="50" height="50">
+                
 
-              {% else %}
+                  {% else %}
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
-              </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                  </li>
 
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                  </li>
+                
+                </ul>
+              </div>
+            </div>
+          </nav>
     {% endif %}
 </header>
 
 
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron jumbotron-fluid" style="padding:100px">
   <div class="container">
-    <h1>Reviews ⭐⭐⭐⭐⭐</h1>      
+    <br>
+    <h1 class="stars">Reviews ⭐⭐⭐⭐⭐</h1>      
     <p>A review site for pepole and stores who wants have a review or recored on this site that to help others.</p>
 
   </div>
@@ -141,9 +153,11 @@
 
  <!-- Footer -->
   {% block footer %}
-<footer>
-  <p>&copy;  ffcweb </p>
-</footer>
+  <footer class="footer mt-auto py-3 bg-body-tertiary">
+    <div class="container">
+      <span class="text-body-secondary"> <p>&copy;  ffcweb </p></span>
+    </div>
+  </footer>
   {% endblock %}
 
 

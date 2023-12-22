@@ -2,7 +2,7 @@
 from django.urls import path
 from .views import all_reviews, category_list,category_detail
 from .views import search_store, toggle_follow_store,toggle_like
-from .views import user_profile,update_user_image
+from .views import user_profile,update_user_image, delete_review
 from . import views
 
 
@@ -34,9 +34,11 @@ urlpatterns = [
     path('toggle_follow/<int:store_id>/', toggle_follow_store, name='toggle_follow_store'),
     path('toggle_like/<int:review_id>/', toggle_like, name='toggle_like'),
 
+    path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
 
-    path('popular_stores/', views.popular_stores, name='popular_stores'),
-    path('star_stores/', views.star_stores, name='star_stores'),
+
+    # path('popular_stores/', views.popular_stores, name='popular_stores'),
+    # path('star_stores/', views.star_stores, name='star_stores'),
 
 
 

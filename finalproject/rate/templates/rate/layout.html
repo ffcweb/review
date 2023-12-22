@@ -35,22 +35,22 @@
           </div>
         </title>
       
-        <div class="container-fluid">
-          <div class="store-container">
+        
+          <!-- <div class="store-container">
             {% if user.is_authenticated %}
             <div class="alert alert-success" role="alert" href="#"><p class="mb-0">Well done! You have signe in as : {{ user.username }}</p></div>
+            <img src="{{ user.image_url }}" alt="image" width="25" height="25">
             {% endif %}
           </div>
-        </div>
-
+   -->
         <!-- Navigation menu, etc. -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="#">Review</a>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+          <a class="navbar-brand" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBp_jLbdg8HuM0rkuzxlGxfyB8cswrmAlFVUHdXckCgfEk4HH-Jj-HnTU4Mnu8T0VYMxc&usqp=CAU"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
               {% if user.is_authenticated %}
               <!-- <form class="form-inline my-2 my-lg-0">
@@ -58,10 +58,20 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </form> -->
 
-              <form class="form-inline my-2 my-lg-0" action="{% url 'search_store' %}" method="get">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <form class="form-inline my-2 my-lg-0" action="{% url 'search_store' %}" 
+              method="get">
+                <input class="form-control mr-sm-2" type="search" 
+                placeholder="Search" aria-label="Search" name="q">
+                <button class="btn btn-outline-success my-2 my-sm-0" 
+                type="submit">Search</button>
               </form>
+
+              <!-- <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" 
+                placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" 
+                type="submit">Search</button>
+              </form> -->
 
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only">(current)</span></a>
@@ -89,6 +99,10 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
               </li>
+
+              <div class="loggedInFo"><p class="mb-0" style="color:aliceblue">{{ user.username }}</p></div>
+
+              <img src="{{ user.image_url }}" alt="image" width="50" height="50">
 
               {% else %}
 

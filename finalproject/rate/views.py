@@ -29,7 +29,7 @@ def index(request):
     reviews = Review.objects.all().order_by("-timestamp")
 
      # use pagination built-in function
-    paginator = Paginator(reviews, 10)  # Show 10 posts per page
+    paginator = Paginator(reviews, 20)  # Show 10 posts per page
     page = request.GET.get('page')
     try:
         paginated_reviews = paginator.page(page)
@@ -150,7 +150,7 @@ def all_reviews(request, ):
 
 
     # Use pagination built-in function.
-    paginator = Paginator(reviews, 10)  # Show 10 reviews per page.
+    paginator = Paginator(reviews, 32)  # Show 10 reviews per page.
     page = request.GET.get('page')
     try:
         paginated_reviews = paginator.page(page)
@@ -190,7 +190,7 @@ def store_list(request,sort_by):
 
 
     # Use pagination built-in function.
-    paginator = Paginator(stores, 10)  # Show 10 reviews per page.
+    paginator = Paginator(stores, 32)  # Show 10 reviews per page.
     page = request.GET.get('page')
     try:
         paginated_stores = paginator.page(page)
@@ -263,55 +263,19 @@ def store_profile(request, store_id):
 
 # ================================================
 
-# def user_profile(request, user_id):
-#     # First, get all the reviews in timestamp order.
-#     user = get_object_or_404(User, id = user_id)
-#     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
-
-   
-#     # give the number of the like_count for the user profile page
-#     reviews = Review.objects.filter(user=user).order_by('-timestamp')
-#     for review in reviews:
-#         likes = LikeReview.objects.filter(review=review)
-#         review.like_count = len(likes)
-
-# # Use pagination built-in function.
-#     paginator = Paginator(user_reviews, 10)  # Show 10 reviews per page.
-#     page = request.GET.get('page')
-#     try:
-#         paginated_user_reviews = paginator.page(page)
-#     except PageNotAnInteger:
-#         # If page is not an integer, deliver the first page.
-#         paginated_user_reviews = paginator.page(1)
-#     except EmptyPage:
-#         # If page is out of range (e.g., 9999), deliver the last page of results.
-#         paginated_user_reviews = paginator.page(paginator.num_pages)
-
-#     context = {
-#         'user': user,
-#         'user_reviews': user_reviews,
-#         'paginated_user_reviews':paginated_user_reviews
-#     }
-#     print(context)
-#     return render(request, 'rate/user_profile.html', context)
-
-    # return render(request, 'rate/store_profile.html', { "user": user, 'reviews': paginated_reviews})
-    # return render(request, 'rate/user_profile.html', { 'reviews': reviews })
-
-
 def user_profile(request, user_id):
     user = get_object_or_404(User, id = user_id)
     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
 
    
     # give the number of the like_count for the user profile page
-    reviews = Review.objects.filter(user=user).order_by('-timestamp')
-    for review in reviews:
+    # reviews = Review.objects.filter(user=user).order_by('-timestamp')
+    for review in user_reviews:
         likes = LikeReview.objects.filter(review=review)
         review.like_count = len(likes)
 
 
-    paginator = Paginator(user_reviews, 10)
+    paginator = Paginator(user_reviews, 15)
     page = request.GET.get('page')
     try:
         paginated_user_reviews = paginator.page(page)
@@ -424,4 +388,17 @@ def toggle_like(request,review_id):
     }
     return JsonResponse(data)
        
+@require_POST
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id = review_id)
+    if request.user == review.user:
+        review.delete()
+        status = "success"
+    else:
+        status = "failed"    
+    data = {
+        'status':status,
+    }
 
+    return JsonResponse(data)

@@ -1,7 +1,7 @@
 <!-- rate/templates/rate/all_stores.html -->
 {% extends "rate/layout.html" %} {% load static %} {% block body %}
 
-<div class="container-fluid">
+<div class="container">
   <div class="store-container">
     <div class="card">
       <div class="card-body">
@@ -41,6 +41,8 @@
             >Most Reviewed
           </label>
         </div>
+
+        <hr />
 
         <div class="row">
           {% for store in stores %}
@@ -82,7 +84,7 @@
       </div>
     </div>
 
-    <hr />
+<br>
 
     <!-- pagination -->
     <div class="container">

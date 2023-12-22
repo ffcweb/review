@@ -1,7 +1,7 @@
 <!-- rate/templates/rate/all_reviews.html -->
 {% extends "rate/layout.html" %} {% load static %} {% block body %} 
 {% block content %}
-<div class="container-fluid">
+<div class="container">
   <div class="store-container">
     <div class="card">
       <div class="card-body">
@@ -30,8 +30,8 @@
             <img
               src="{{ user.image_url }}"
               alt="image"
-              width="100"
-              height="100"
+              width="50"
+              height="50"
             />
 
             <!-- <p class="card-text">Category: {{ store.category }}</p> -->
@@ -45,32 +45,30 @@
 
 
             <p>Content: {{ review.content }}</p>
-
             <p class="review_rate_stars">{{ review.star_rating }}</p>
-
             <p>💰{{ review.spending }}</p>
-
             <!--  to display the hart to like the reviews -->
             <div>
               <span
                 class="like_button"
                 onclick="handleToggleLike({{ review.id }})"
                 style="cursor: pointer"
-                >❤️</span
-              >
+                >❤️
+              </span>
               <span id="review_{{ review.id }}_like_count"
-                >{{review.like_count}}</span
-              >
-            </div>
+                >{{review.like_count}}
+              </span>
 
-            <hr />
+              <hr>
+
+            </div>
             {% endfor %}
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+<br>
 
 <!-- pagination -->
 <div class="container">

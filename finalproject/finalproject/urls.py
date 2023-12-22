@@ -18,10 +18,10 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("", include("rate.urls")),
-
     path('rate/', include('rate.urls')),
     # Now, you should be able to access the reviews view at 
     # the URL http://yourdomain.com/rate/reviews/. 
     # Adjust the URLs based on your project structure and preferences.
+
+        # path("", include("rate.urls")),
 ]

@@ -16,6 +16,12 @@ from django.urls import reverse
 from django.views.decorators.http import require_POST
 from .models import User, Store, Review, UserProfile, FavoriteStore, Category
 from .models import SearchBox, LikeReview, CommentOnReview, StoreFollowers
+from django.views import View
+from django.shortcuts import render
+from django.http import JsonResponse
+from .forms import UpdateProfileForm
+
+
 
 
 def index(request):
@@ -152,8 +158,8 @@ def all_reviews(request, ):
 
 
 
-def store_list(request):
-    stores = Store.objects.all().order_by('-Joined_date')
+def store_list(request,sort_by):
+    stores = Store.objects.all()#.order_by('-Joined_date')
     # return render(request, 'rate/store_list.html', {'stores': stores})
 
     for store in stores:
@@ -165,6 +171,15 @@ def store_list(request):
 
         store.average_rating=round(average_rating,1)
         store.review_count= len(reviews)
+
+
+    # for the reverse order
+    if sort_by == 'rating':
+        stores= sorted(stores, key = lambda x: x.average_rating, reverse = True)
+    elif sort_by == 'reviews':
+        stores = sorted(stores, key = lambda x: x.review_count, reverse = True)
+    else:
+        stores = sorted(stores, key = lambda x: x.Joined_date, reverse = True)
 
 
     # Use pagination built-in function.
@@ -179,11 +194,27 @@ def store_list(request):
         # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_stores = paginator.page(paginator.num_pages)
 
-    return render(request, 'rate/store_list.html', { 'stores': paginated_stores})
+    context={
+        'stores':paginated_stores,
+        'sort_by': sort_by,
+    }
+
+    return render(request, 'rate/store_list.html', context)
 
 def store_profile(request, store_id):
     store = get_object_or_404(Store, id = store_id)
     reviews = Review.objects.filter(store = store).order_by('-timestamp')
+
+    if request.user.is_anonymous:
+        # user is not logged in 
+        follow_button_text="Follow"
+    else:
+        store_follower_pair = StoreFollowers.objects.filter(
+            follower=request.user)
+        if store_follower_pair.exists():
+            follow_button_text="Unfollow"
+        else:
+            follow_button_text="Follow"
 
     if len(reviews)>0:
         average_rating= mean([x.star_rating for x in reviews])
@@ -192,6 +223,9 @@ def store_profile(request, store_id):
 
     store.average_rating=round(average_rating,1)
     store.review_count= len(reviews)
+
+    all_followers =  StoreFollowers.objects.filter(store=store)
+    follower_count=len(all_followers)
 
     for review in reviews:
         likes = LikeReview.objects.filter(review=review)
@@ -209,14 +243,59 @@ def store_profile(request, store_id):
         # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_reviews = paginator.page(paginator.num_pages)
 
-    return render(request, 'rate/store_profile.html', { "store": store, 'reviews': paginated_reviews})
+    context = {
+        "store":store,
+        "follow_button_text":follow_button_text,
+        "reviews":paginated_reviews,
+        'follower_count':follower_count,
+    }
+
+    return render(request, 'rate/store_profile.html', context)
+
+    # return render(request, 'rate/store_profile.html', { "store": store, 'reviews': paginated_reviews})
 
 # ================================================
 
+# def user_profile(request, user_id):
+#     # First, get all the reviews in timestamp order.
+#     user = get_object_or_404(User, id = user_id)
+#     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
+
+   
+#     # give the number of the like_count for the user profile page
+#     reviews = Review.objects.filter(user=user).order_by('-timestamp')
+#     for review in reviews:
+#         likes = LikeReview.objects.filter(review=review)
+#         review.like_count = len(likes)
+
+# # Use pagination built-in function.
+#     paginator = Paginator(user_reviews, 10)  # Show 10 reviews per page.
+#     page = request.GET.get('page')
+#     try:
+#         paginated_user_reviews = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver the first page.
+#         paginated_user_reviews = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g., 9999), deliver the last page of results.
+#         paginated_user_reviews = paginator.page(paginator.num_pages)
+
+#     context = {
+#         'user': user,
+#         'user_reviews': user_reviews,
+#         'paginated_user_reviews':paginated_user_reviews
+#     }
+#     print(context)
+#     return render(request, 'rate/user_profile.html', context)
+
+    # return render(request, 'rate/store_profile.html', { "user": user, 'reviews': paginated_reviews})
+    # return render(request, 'rate/user_profile.html', { 'reviews': reviews })
+
+
 def user_profile(request, user_id):
-    # First, get all the reviews in timestamp order.
     user = get_object_or_404(User, id = user_id)
     user_reviews = Review.objects.filter(user=user).order_by('-timestamp')
+
    
     # give the number of the like_count for the user profile page
     reviews = Review.objects.filter(user=user).order_by('-timestamp')
@@ -224,49 +303,28 @@ def user_profile(request, user_id):
         likes = LikeReview.objects.filter(review=review)
         review.like_count = len(likes)
 
-# Use pagination built-in function.
-    paginator = Paginator(user_reviews, 10)  # Show 10 reviews per page.
+
+    paginator = Paginator(user_reviews, 10)
     page = request.GET.get('page')
     try:
         paginated_user_reviews = paginator.page(page)
     except PageNotAnInteger:
-        # If page is not an integer, deliver the first page.
         paginated_user_reviews = paginator.page(1)
     except EmptyPage:
-        # If page is out of range (e.g., 9999), deliver the last page of results.
         paginated_user_reviews = paginator.page(paginator.num_pages)
+
+    # Add the form for updating the profile image
+    update_profile_form = UpdateProfileForm()
 
     context = {
         'user': user,
         'user_reviews': user_reviews,
-        'paginated_user_reviews':paginated_user_reviews
+        'paginated_user_reviews': paginated_user_reviews,
+        'update_profile_form': update_profile_form,
     }
-    print(context)
+
     return render(request, 'rate/user_profile.html', context)
-
-    # return render(request, 'rate/store_profile.html', { "user": user, 'reviews': paginated_reviews})
-    # return render(request, 'rate/user_profile.html', { 'reviews': reviews })
-
     # ==============================================
-class UserProfileView(View):
-    template_name = 'user_profile.html'
-
-    def get(self, request, *args, **kwargs):
-        user = UserProfile.objects.get(username='username') 
-        return render(request, self.template_name, {'user': user})
-
-    def post(self, request, *args, **kwargs):
-        user = UserProfile.objects.get(username='username') 
-        new_image_url = request.POST.get('new_image_url')
-
-        if new_image_url:
-            user.image_url = new_image_url
-            user.save()
-
-            return JsonResponse({'status': 'success', 'message': 'Profile image updated successfully'})
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Invalid image URL'})
-
 
 
 def popular_stores(request):
@@ -285,24 +343,32 @@ def search_store(request):
     context = {'results': results, 'query': query}
     return render(request, 'rate/search_results.html', context)
 
-
+@require_POST
 @login_required
 def toggle_follow_store(request, store_id):
-    store_to_follow = get_object_or_404(Store, id=store_id)
+    
     user = request.user
 
-    follower_store_pair = StoreFollowers.objects.filter(follower=follower, store=store)
-    print(follower_store_pair)
+    follower_store_pair = StoreFollowers.objects.filter(follower=user, store_id=store_id)
+    if follower_store_pair.exists():
+        follower_store_pair.delete()
+        new_status="Unfollowed"
+    else:
+        StoreFollowers.objects.create(follower=user,store_id=store_id)
+        new_status = "Followed"
 
-    # if request.method == 'POST':
-    #     if storeToFollow in storeFollowers.follower.all():
-    #         storeFollowers.follower.remove(storeToFollow)
-    #     else:
-    #         storeFollowers.follower.add(storeToFollow)
-    #         storeFollowers.save()
-    #         storeFollowers.follower.count()
-    #         storeFollowers.save()
-    # return JsonResponse({'follower': StoreFollowers.follower})
+    followers= StoreFollowers.objects.filter(store_id=store_id)
+    new_follower_count = len(followers)
+
+    store = get_object_or_404(Store, id= store_id)
+
+    data={
+        'store_id': store_id,
+        'store_name':store.name,
+        'new_status':new_status,
+        'new_followers_count':new_follower_count,
+    }
+    return JsonResponse(data)
 
 
 # Review_id :is from the urls.py 

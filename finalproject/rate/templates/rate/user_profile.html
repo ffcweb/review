@@ -1,43 +1,45 @@
 {% extends 'rate/layout.html' %}
 
+<!-- Include the CSRF token -->
+<script>
+    var csrf_token = "{{ csrf_token }}";
+</script>
+
 {% load static %}
 
 {% block body %}
+
 {% block content %}
 
 <div class="container-fluid">
     <div class="store-container">
         <div class="card">
             <div class="card-body">
+                <!-- <h2><a href="{% url 'user_profile' user_id=user.id %}">
+                    {{ user.username }} 's Profile</a>
+                </h2> -->
+                <!-- <div class="card" style="width:700px"> -->
+                <div class="review" data-post-id="{{ review.id }}">
+                    <img class="card-img-top" src="{{ user.image_url }}" alt="Card image" style="width:100">
 
-                <h2><a href="{% url 'user_profile' user_id=user.id %}">{{ user.username }} 's Profile</a></h2>
-
-                <div class="card" style="width:700px">
-                    <div class="review" data-post-id="{{ review.id }}">
-
-                        <img class="card-img-top" src="{{ user.image_url }}" alt="Card image" style="width:100">
-
+                    <h1>{{ user.username }}'s' Profile</h1>
+                    <p>Current Profile Image: {{ user.image_url }}</p>
+                    
+                    <form id="updateProfileForm" method="post">
+                        {% csrf_token %}
+                        <label for="newImageUrl">New Image URL:</label>
+                        <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
+                        <button type="submit" onclick="updateProfileImage()">Update Profile Image</button>
+                        <div id="loadingSpinner">Updating...</div>
+                    </form> 
                         
-                        
-                        <h1>User Profile</h1>
-                        <p>Current Profile Image: {{ user.image_url }}</p>
-                        
-                        <form id="updateProfileForm">
-                            <label for="newImageUrl">New Image URL:</label>
-                            <input type="text" id="newImageUrl" name="new_image_url" placeholder="Enter new image URL">
-                            <button type="submit">Update Profile Image</button>
-                        </form>
-
-
-
-
-
+                    
                         <div class="card-body">
                             <h4 class="card-title">{{ user.username }}</h4>
                             <p class="card-text">Joined Date: {{ user.date_joined }}</p>
                             <p class="card-text">Address: {{ user.email }}</p>
                             <p class="card-text">Introduction: {{ user.last_login }}</p>
-                            <a href="#" class="btn btn-primary stretched-link">See Profile</a>
+                            <!-- <a href="#" class="btn btn-primary stretched-link">See Profile</a> -->
                         </div>
                     </div>
                 </div>
@@ -60,16 +62,14 @@
                 <div class="user_reviews">
                     <ul>
                         <div class="reviews" data-post-id="{{ review.id }}">
-
                             <!-- <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p> 
                             <p>Posted by <a href="{% url 'user_profile' user.id %}"> {{ review.user }} for {{ review.store }} on {{ review.timestamp }} </a> </p> -->
-                            
                             <p class="card-text">Posted by 
                                 <a href="{% url 'user_profile' review.user_id %}"> 
                                   {{ review.user }} 
                                 </a>for <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a> on {{ review.timestamp }} 
                               </p>
-                            <img src="{{ review.image_url }}" alt="iamge">
+                            <img src="{{ user.image_url }}" alt="iamge">
 
                             <!-- <p>Review: {{ review.content }}</p>  -->
                             <p>Time: {{ review.timestamp }}</p>
@@ -109,7 +109,6 @@
             <span class="current">
                 Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
             </span>
-  
             {% if context.has_next %}
             <a href="?page={{ reviews.next_page_number }}">Next |  </a>
             <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
@@ -120,38 +119,13 @@
 </div>
 
 
+<!-- Include the JavaScript file -->
 <script src="{% static 'rate/display_stars.js' %}"></script> 
 <script src="{% static 'rate/like_review.js' %}"></script> 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#updateProfileForm').submit(function (e) {
-                e.preventDefault();
+<script src="{% static 'rate/user_profile.js' %}"></script>
+<!-- <script defer src="{% static 'rate/user_profile.js' %}"></script> -->
 
-                var newImageUrl = $('#newImageUrl').val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: window.location.pathname,
-                    data: {
-                        'new_image_url': newImageUrl,
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                    },
-                    success: function (data) {
-                        if (data.status === 'success') {
-                            alert(data.message);
-                            window.location.reload();
-                        } else {
-                            alert(data.message);
-                        }
-                    },
-                    error: function () {
-                        alert('An error occurred while updating the profile image.');
-                    }
-                });
-            });
-        });
-    </script>
 
 {% endblock %}
 {% endblock %}

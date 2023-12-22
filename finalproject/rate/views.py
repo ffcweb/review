@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.urls import reverse
 # from .forms import ReviewForm
 from django.views.decorators.http import require_POST
-from .models import User, Store, Review, UserProfile, FavoriteStore, Category
+from .models import User, Store, Review, FavoriteStore, Category
 from .models import SearchBox, LikeReview, CommentOnReview, StoreFollowers
 from django.views import View
 from django.shortcuts import render

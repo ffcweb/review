@@ -41,87 +41,87 @@ The Review web application is a platform that allows users to write and share re
 ## File Contents
 
 1. Models.py
-   ⋅⋅\* Purpose: Handles user authentication, including login, logout, and registration.
+   ... Purpose: Handles user authentication, including login, logout, and registration.
 
 2. views.py:
-   ⋅⋅\* This file contains the views for handling different functionalities, including rendering pages, user authentication, store and user profiles, creating and deleting reviews, and more.
+   ... This file contains the views for handling different functionalities, including rendering pages, user authentication, store and user profiles, creating and deleting reviews, and more.
 
 3. admin.py
 
 - The admin.py file in the Review web application is responsible for registering the application's models with the Django admin interface. This allows administrators to manage and manipulate data directly from the admin panel. Here's an overview of the purpose of each registration:
 
 - Project admin.py Description
-  ⋅⋅\* Category
+  ... Category
   ... Purpose: Manage and view categories in the admin panel.
 
-⋅⋅\* Store
-... Purpose: Administer store-related data in the admin panel.
+- Store
+  ... Purpose: Administer store-related data in the admin panel.
 
-⋅⋅\* Review
-... Purpose: Oversee user reviews through the admin panel.
+- Review
+  ... Purpose: Oversee user reviews through the admin panel.
 
-⋅⋅\* LikeReview
-... Purpose: Manage data related to likes on reviews.
+- LikeReview
+  ... Purpose: Manage data related to likes on reviews.
 
-⋅⋅\* StoreFollowers
-... Purpose: Manage data related to store followers.
+- StoreFollowers
+  ... Purpose: Manage data related to store followers.
 
 - By registering these models in the admin.py file, the Review web application ensures that administrators can easily access and manipulate data relevant to categories, stores, reviews, likes, comments, store followers, and favorite stores through the Django admin interface. This contributes to efficient data management and system administration.
 
 4. javaScript files
-   ..\* user_profile.js
-   ..\* like_review.js
-   ..\* follow_store.js
-   ..\* display_stars.js
-   ..\* delete_review.js
 
-5. The urls.py file and Templates in the Review web application serves as a mapping between URL patterns and their corresponding views.
-   Here's a comprehensive breakdown of the purpose of each URL pattern and the Templates:
+   - user_profile.js
+   - like_review.js
+   - follow_store.js
+   - display_stars.js
+   - delete_review.js
 
-. Home Page
-..\* index.html
-⋅⋅⋅ Purpose: Maps to the home page of the application, displaying a list of reviews.
-⋅⋅⋅ View: index in views.py.
+5. The urls.py file and Templates in the Review web application serves as a mapping between URL patterns and their corresponding views. Here's a comprehensive breakdown of the purpose of each URL pattern and the Templates:
 
-. Create Review
-..\* create_review.html
-... Purpose: Provides a page for users to create new reviews for stores.
-... View: create_review in views.py.
+- Home Page
+- index.html
+- Purpose: Maps to the home page of the application, displaying a list of reviews.
+- View: index in views.py.
+
+- Create Review
+  ... create_review.html
+  ... Purpose: Provides a page for users to create new reviews for stores.
+  ... View: create_review in views.py.
 
 . User Profile
-..\_ user_profile.html
+... user_profile.html
 ⋅⋅⋅ Purpose: Displays the profile of a specific user, including their reviews and information.
 ⋅⋅⋅ View: user_profile in views.py.
 
-..\_ Update User Image
+... Update User Image
 ... Purpose: Handles the AJAX request to update the user's profile image.
 ... View: update_user_image in views.py.
 
 . Store Profile and Reviews
-..\_ store_profile.html
-..\_ all_review.html
+... store_profile.html
+... all_review.html
 ⋅⋅⋅ Purpose: Shows the profile of a specific store and lists all reviews.
 ⋅⋅⋅ Views: store_profile and all_reviews in views.py.
 
 . Store List and Sorting
-..\_ store_list.html
+... store_list.html
 ⋅⋅⋅ Purpose: Displays a list of stores and provides sorting options based on date, ratings, or reviews.
 ⋅⋅⋅ View: store_list in views.py.
 
 . User Authentication
-..\_ layout.html
-..\_ login.html
-..\_ register.html
+... layout.html
+... login.html
+... register.html
 ... Purpose: Handles user authentication, including login, logout, and registration.
 ... Views: login_view, logout_view, and register in views.py.
 
 . Store Search
-..\* search_results.html
+... search_results.html
 ⋅⋅⋅ Purpose: Allows users to search for stores based on their names.
 ⋅⋅⋅ View: search_store in views.py.
 
 . Categories
-..\* category_list.html
+... category_list.html
 ⋅⋅⋅ Purpose: Provides functionality to view a list of categories and details of a specific category.
 ⋅⋅⋅ Views: category_list and category_detail in views.py.
 
@@ -169,36 +169,36 @@ The Review web application is a platform that allows users to write and share re
 
 - Open a terminal or command prompt and run the following command to install Django using pip:
 
-7. Copy code
+6. Copy code
    `pip install Django`
 
-8. Clone the Project:
+7. Clone the Project:
 
 - Clone the project repository or download the source code from where it is hosted (e.g., GitHub).
 
-9. Navigate to Project Directory:
+8. Navigate to Project Directory:
 
 - Open a terminal or command prompt, navigate to the project directory using the cd command:
   `cd path/to/your/project`
 
-10. Apply Migrations:
+8. Apply Migrations:
 
 - Run the following commands to apply database migrations:
 
-11. Copy code
+10. Copy code
 
 ```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-12. Create a Superuser (Admin):
+11. Create a Superuser (Admin):
 
 - Create a superuser account to access the Django admin interface:
 
 `python manage.py createsuperuser`
 
-13. Run the Development Server:
+12. Run the Development Server:
 
 - Start the development server using the following command:
 

@@ -11,112 +11,104 @@
 
 {% block content %}
 
-<div class="container">
-    <div class="store-container">
-        <div class="card">
+<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+    <div class="container py-5">
+        <h1 class="display-5 fw-bold">{{ user.username }}'s' Profile</h1>
+        <div class="review" data-post-id="{{ review.id }}">
+            <img src="{{ user.image_url }}" width="200" height="200" style="border-radius:50%">
             <div class="card-body">
-                <!-- <h2><a href="{% url 'user_profile' user_id=user.id %}">
-                    {{ user.username }} 's Profile</a>
-                </h2> -->
-                <!-- <div class="card" style="width:700px"> -->
-                <div class="review" data-post-id="{{ review.id }}">
-                    <img src="{{ user.image_url }}" alt="image" width="200" height="200">
-                    <h3>{{ user.username }}'s' Profile</h3>
-                    <!-- <p>Current Profile Image: {{ user.image_url }}</p> -->
-                    <!--                     
-                    <form id="updateProfileForm" method="post">
-                        {% csrf_token %} -->
-                        <label for="newImageUrl">New Image URL:</label>
-                        <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
-                        <button onclick="updateProfileImage()">Update Profile Image</button>
-                        <!-- <div id="loadingSpinner">.</div> -->
-                    <!-- </form> 
-                         -->
-                    
-                        <div class="card-body">
-                            <h4 class="card-title">Name: {{ user.username }}</h4>
-                            <p class="card-text">Joined Date: {{ user.date_joined }}</p>
-                            <p class="card-text">Address: {{ user.email }}</p>
-                            <p class="card-text">Introduction: {{ user.last_login }}</p>
-                            <!-- <a href="#" class="btn btn-primary stretched-link">See Profile</a> -->
-                        </div>
-                    </div>
-                </div>
+                <label for="newImageUrl">New Image URL:</label>
+                <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
+                <button class="btn btn-primary" onclick="updateProfileImage()">Update Profile Image</button>
             </div>
+            <br>
+            <!-- <h4 class="card-title">Name: {{ user.username }}</h4> -->
+            <p class="card-text">Joined Date: {{ user.date_joined }}</p>
+            <p class="card-text">Address: {{ user.email }}</p>
+            <p>Introduction : {{ user.introduction }}</p>
         </div>
     </div>
 </div>
-    <hr>
-    <br>
 
-<!-- ============================= -->
+<hr>
+
 <!--  Display all the posts from this user -->
-<div class="container">
-    <div class="store-container">
-        <div class="card">
-            <div class="card-body">
-                <h4>All the posts from {{ user.username }}</h4>
-                <hr>
-                {% for review in user_reviews %}
-                <div class="user_reviews">
-                    <ul>
-                        <div class="reviews" data-post-id="{{ review.id }}">
-                            <p class="review_rate_stars">{{ review.star_rating }}</p>
-                            <p>💰 {{ review.spending }}</p>
-                            <p>Content: {{ review.content }}</p>
-                            <!-- display the user's profile image -->
-                            <img src="{{ user.image_url }}" alt="image" width="20" height="20">
-                            
-                            <p class="card-text">Posted by 
-                                <a href="{% url 'user_profile' review.user_id %}"> 
-                                  {{ review.user }} 
-                                </a>for <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a> on {{ review.timestamp }} 
-                              </p>
-                            
-                            <!--  to display the hart to like the reviews -->
-                            <div>
-                                <span class="like_button" onclick="handleToggleLike({{ review.id }})" 
-                                style="cursor: pointer">❤️</span>
-                                <span id="review_{{ review.id }}_like_count">{{review.like_count}} 
-                                </span>       
-                            <button id="delete_review" onclick="handleDeleteReview({{ review.id }})" >delete</button>
-                            
-                            <hr>
-                            
+<div class="container mt-5 ">
+    <h3>All the posts from {{ user.username }}</h3>
+    <div class="row"> 
+        {% for review in user_reviews %}
+        <div class="col-sm-4">
+            <div style="background-color:darkcyan;color:white;padding:20px;">
+                <ul>
+                    <div class="reviews" data-post-id="{{ review.id }}">
+                        <p class="review_rate_stars">{{ review.star_rating }}</p>
+                        <p>💰 {{ review.spending }}</p>
+                        <p>Content: {{ review.content }}</p>
+                        <span><img src="{{ user.image_url }}" alt="image" width="20" height="20">
+                            <span class="card-text">Posted by 
+                                <a style="color:bisque" href="{% url 'user_profile' review.user_id %}"> 
+                                {{ review.user }} </a>
+                                for 
+                                <a style="color:bisque" href="{% url 'store_profile' review.store.id %}">
+                                {{ review.store.name }}
+                                </a> on 
+                                {{ review.timestamp }} 
+                            </span>
+                        </span>
+
+                        <div>
+                            {% if review.image_url != "" %}
+                            <span><img src="{{ review.image_url }}" alt="Image" width="100" height="100">
+                            {% endif %}
+                        </span>
+
+                        
+                        <span class="like_button" onclick="handleToggleLike({{ review.id }})" 
+                            style="cursor: pointer">❤️
+                            <span id="review_{{ review.id }}_like_count">{{review.like_count}}  
+                            </span>
+                        </span>
                         </div>
-                    </div>
+
+                        <br>
+
+                        <div>
+                            <br>
+                            <button id="delete_review" onclick="handleDeleteReview({{ review.id }})">Delete</button>
+                            <hr>
+                        </div>
                 </ul>
             </div>
-            {% endfor %}
-        </div> 
+        </div>
+        {% endfor %}
     </div>
 </div>
 
-<br>
-
+<hr>
 
 <!-- pagination -->
 <div class="container">
     <div class="d-flex justify-content-center">
       <div class="pagination">
         <span class="step-links">
-            {% if reviews.has_previous %}
+            {% if paginated_user_reviews.has_previous %}
             <a href="?page=1">&laquo; First |  </a>
-            <a href="?page={{ reviews.previous_page_number }}">   previous</a>
+            <a href="?page={{ paginated_user_reviews.previous_page_number }}">   previous</a>
             {% endif %}
   
             <span class="current">
-                Page {{ reviews.number }} of {{ reviews.paginator.num_pages }}.
+                Page {{ paginated_user_reviews.number }} of {{ paginated_user_reviews.paginator.num_pages }}.
             </span>
-            {% if context.has_next %}
-            <a href="?page={{ reviews.next_page_number }}">Next |  </a>
-            <a href="?page={{ reviews.paginator.num_pages }}">   Last &raquo;</a>
+            {% if paginated_user_reviews.has_next %}
+            <a href="?page={{ paginated_user_reviews.next_page_number }}">Next |  </a>
+            <a href="?page={{ paginated_user_reviews.paginator.num_pages }}">   Last &raquo;</a>
             {% endif %}
         </span>
     </div>
   </div>
 </div>
 
+<br>
 
 <!-- Include the JavaScript file -->
 <script src="{% static 'rate/display_stars.js' %}"></script> 

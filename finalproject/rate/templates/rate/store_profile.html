@@ -4,15 +4,65 @@
 <!-- Place script inside the body tag -->
 {% block content %}
 
+<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+  <div class="container py-5">
+      <h1 class="display-5 fw-bold">{{ store.name }}'s Profile</h1>
+      <span hidden><h2>ID : {{ store.id }}</h2></span>
+      <div class="review" data-post-id="{{ review.id }}">
+          <img src="{{ store.image_url }}" width="200" height="200" style="border-radius:50%">
+          <div class="card-body">
+              <label for="newImageUrl">New Image URL:</label>
+              <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
+              <button class="btn btn-primary" onclick="updateProfileImage()">Update Profile Image</button>
+          </div>
+          <br>
+         
+         
+          <br>
+          <span class="review_rate_stars">{{ store.average_rating }}</span>
+          <span>{{ store.average_rating}}
+          <span>({{ store.review_count}})</span></span>
+          <br>
+
+          <p class="card-text">Joined Date: {{ store.Joined_date }}</p>
+          <p>Introduction: {{ store.introduction }}</p>
+   
+          <p>Opening Time: {{ store.opening_time }}</p>
+          <p>Closing Time: {{ store.closing_time }}</p>
+          <p>Address: {{ store.address }}</p>
+
+          {% if user.is_authenticated %}
+          <span>
+            <button
+              id="follow_store"
+              type="button"
+              class="btn btn-primary"
+              onclick="handleToggleFollow({{store.id}})"
+            >
+              {{ follow_button_text }}
+            </button>
+          </span>
+            {% endif %}
+
+          <span id="followersCount">followers: 
+            <span id="spanFollwerCount">{{ follower_count }}</span>
+          </span>
+
+      </div>
+  </div>
+</div>
+
+
+<!-- 
 <div class="container">
   <div class="store-container">
     <div id="follow_alert" class="alert alert-success" hidden></div>
-
     <div class="card">
       <div class="card-body">
         <h2>{{ store.name }}'s Profile</h2>
         <span hidden><h2>ID : {{ store.id }}</h2></span>
-        <img src="{{ store.image_url }}" alt="iamge" width="100" height="100" />
+        
+        <img src="{{ store.image_url }}" alt="iamge" width="200" height="200" style="border-radius:50%">
 
         {% if user.is_authenticated %}
         <div>
@@ -27,10 +77,10 @@
         </div>
         {% endif %}
 
-        <!-- <p>Category: {{ store.category }}</p> -->
+        <p>Category: {{ store.category }}</p>
         <p>Joined Date: {{ store.Joined_date }}</p>
 
-        <!-- Display average star Here -->
+    
         <p class="card-text">
           <span class="review_rate_stars">{{ store.average_rating }}</span>
           <span>{{ store.average_rating}}</span>
@@ -42,21 +92,16 @@
         <p>Opening Time: {{ store.opening_time }}</p>
         <p>Closing Time: {{ store.closing_time }}</p>
 
-        <!-- ============ update_follow_ui page content ============= -->
+    
         <span id="followersCount"
           >followers :
           <span id="spanFollwerCount">{{ follower_count }}</span></span
         >
 
-        <!-- <ul>
-          {% for follower in store_profile.following.all %}
-            <li><a href="{% url 'user_profile' user_id=follower.id %}">{{ follower.username }}</a></li>
-          {% endfor %}
-        </ul> -->
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <hr />
 
@@ -66,7 +111,7 @@
     <div class="card">
       <div class="card-body">
         <h4>Post your reviews</h4>
-        <form method="post" action="{% url 'create_review' %}">
+        <form method="post" action="{% url 'create_review' %}" class="was-validated">
           {% csrf_token %}
 
           <!-- hid the store id on the front-end -->
@@ -83,7 +128,7 @@
             </div>
           </span>
 
-          <div class="form-group">
+          <div class="form-group" >
             <label for="content">Review Content:</label>
             <textarea
               class="form-control"
@@ -169,7 +214,65 @@
 <hr />
 
 <!-- ========= Display All of the Reviews related the store ======================= -->
-<div class="container">
+
+<div class="container mt-5 ">
+
+  <h3>All the Reviews for this store that You might find helpfull</h3>
+  <br>
+  <div class="row">
+
+    {% for review in reviews %}
+       <div class="col-sm-4">
+        <div style="background-color:darkcyan;color:white;padding:20px;">
+          <ul>
+            <div class="review" data-post-id="{{ review.id }}">
+              <p class="review_rate_stars">{{ review.star_rating }}</p>
+                <span>💰{{ review.spending }}
+                  &nbsp;&nbsp;
+                  <span>
+                      <img
+                      src="{{ user.image_url }}"
+                      alt="image"
+                      width="50"
+                      height="50"/>
+                    </span>
+                  </span>
+  
+                <p class="card-text">Posted by
+                  <a style="color:bisque" href="{% url 'user_profile' review.user_id %}">{{ review.user }}</a>
+                  for 
+                  <a style="color:bisque" href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a>
+                  on {{ review.timestamp }}
+                </p>
+                &nbsp;
+
+                <p>Review: {{ review.content }}</p>
+                {% if review.image_url != "" %}
+                <img src="{{ review.image_url }}" alt="iamge" width="100" height="100">
+                {% endif %}
+                <br>
+                &nbsp;
+                <div>
+                  <span
+                    class="like_button"
+                    onclick="handleToggleLike({{ review.id }})"
+                    style="cursor: pointer"
+                    >❤️</span>
+                  <span id="review_{{ review.id }}_like_count"
+                    >{{review.like_count}}</span>
+                </div>
+                <hr>
+              </div>
+            </ul>
+ 
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+<!-- ============== -->
+<!-- <div class="container">
   <div class="store-container">
     <div class="card">
       <div class="card-body">
@@ -182,47 +285,30 @@
              src="{{ user.image_url }}"
              alt="image"
              width="20"
-             height="20"
-           />
-            <!-- <p><a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a></p>  -->
-            <!-- <p>Posted by {{ review.user }} on {{ review.timestamp }}</p> -->
-            <p class="card-text">
-              Posted by
-              <a href="{% url 'user_profile' review.user_id %}">
-                {{ review.user }} </a
-              >for
-              <a href="{% url 'store_profile' review.store.id %}"
-                >{{ review.store.name }}</a
-              >
-              on {{ review.timestamp }}
+             height="20"/>
+           <p class="card-text">Posted by
+              <a href="{% url 'user_profile' review.user_id %}">{{ review.user }}</a>
+              for 
+              <a href="{% url 'store_profile' review.store.id %}">{{ review.store.name }}</a
+                >on {{ review.timestamp }}
             </p>
-           
             <p>Review: {{ review.content }}</p>
-            <!-- <p>Time: {{ review.timestamp }}</p> -->
             <img src="{{ review.image_url }}" alt="iamge" width="100" height="100">
-
-            <!-- Display stars  -->
-            <!-- <p class="card-text">Star Rating: {{ review.star_rating }}</p> -->
             <p class="review_rate_stars">{{ review.star_rating }}</p>
             <p>💰{{ review.spending }}</p>
-
-            <!--  to display the hart to like the reviews -->
             <div>
               <span
                 class="like_button"
                 onclick="handleToggleLike({{ review.id }})"
                 style="cursor: pointer"
-                >❤️</span
-              >
+                >❤️</span>
               <span id="review_{{ review.id }}_like_count"
-                >{{review.like_count}}</span
-              >
+                >{{review.like_count}}</span>
             </div>
-
             <hr>
           </div>
         </ul>
-        {% endfor %}
+        {% endfor %} -->
 
         <!-- pagination -->
         <div class="container">
@@ -235,8 +321,7 @@
                 {% endif %}
 
                 <span class="current">
-                  Page {{ reviews.number }} of {{ reviews.paginator.num_pages
-                  }}.
+                  Page {{ reviews.number }} of {{ reviews.paginator.num_pages}}
                 </span>
                 {% if context.has_next %}
                 <a href="?page={{ reviews.next_page_number }}">Next | </a>

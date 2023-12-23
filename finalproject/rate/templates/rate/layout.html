@@ -37,7 +37,7 @@
         
         <!-- <div class="store-container">
           {% if user.is_authenticated %}
-          <div class="alert alert-success" role="alert" href="#"><p class="mb-0">Well done! You have signe in as : {{ user.username }}</p></div>
+          <div class="alert alert-success" role="alert" href="#"><p class="mb-0"> Well done! You have signe in as : {{ user.username }}</p></div>
           <img src="{{ user.image_url }}" alt="image" width="25" height="25">
           {% endif %}
         </div>
@@ -68,7 +68,7 @@
                   {% if user.is_authenticated %}
                 
                   <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only"></span></a>
                   </li>
 
                   <li class="nav-item">
@@ -94,7 +94,9 @@
                   &nbsp;
                   &nbsp;
 
-                  <form class="form-inline my-2 my-lg-0" style="position: absolute; right: 10%" action="{% url 'search_store' %}" 
+                  <!-- search box -->
+                  <form class="form-inline my-2 my-lg-0" style="position: absolute; right: 10%" 
+                  action="{% url 'search_store' %}" 
                   method="get">
                     <input class="form-control mr-sm-2" type="search" 
                     placeholder="Search" aria-label="Search" name="q">
@@ -106,14 +108,30 @@
                   &nbsp;
                   &nbsp;
 
-                  <div class="loggedInFo" style="position: absolute; right: 3%">
+                  <div class="loggedInFo" style="position: absolute; right:3%">
                     <!-- <p class="mb-0" style="color:aliceblue">{{ user.username }}</p> -->
-                    <img src="{{ user.image_url }}" alt="image" width="45" height="45">
+                    <img src="{{ user.image_url }}"  alt="image" width="45" height="45" style="border-radius:50%">
                   </div>
 
-                
-
                   {% else %}
+
+                  <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'index' %}">New <span class="sr-only"></span></a>
+                  </li>
+
+              
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'store_list' %}">Stores</a>
+                  </li>
+
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'all_reviews' %}">Reviews</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category_list' %}">Category</a>
+                  </li>
+
 
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'login' %}">Log In</a>
@@ -130,13 +148,13 @@
     {% endif %}
 </header>
 
-
 <div class="jumbotron jumbotron-fluid" style="padding:100px">
-  <div class="container">
+  <div class="container p-3 my-3 ">
     <br>
-    <h1 class="stars">Reviews ⭐⭐⭐⭐⭐</h1>      
-    <p>A review site for pepole and stores who wants have a review or recored on this site that to help others.</p>
-
+    <h1 class="animation">Reviews ⭐⭐⭐⭐⭐</h1>      
+    <p>A review site for pepole and stores who wants have a review or recored on this site 
+      that to help others.
+    </p>
   </div>
 </div>
 
@@ -153,11 +171,12 @@
 
  <!-- Footer -->
   {% block footer %}
-  <footer class="footer mt-auto py-3 bg-body-tertiary">
-    <div class="container">
-      <span class="text-body-secondary"> <p>&copy;  ffcweb </p></span>
-    </div>
-  </footer>
+ <footer class="footer mt-auto py-3 bg-body-tertiary bg-dark text-white text-center">
+   <div class="container">
+     <span class="text-body-secondary"> <p>&copy;  ffcweb  ffchen.ca@gmail.com</p></span>
+   </div>
+ </footer>
+
   {% endblock %}
 
 

@@ -1,35 +1,28 @@
-{% extends 'rate/layout.html' %}
-<!-- search_results.html -->
-{% load static %}
-
-{% block body %}
+{% extends "rate/layout.html" %} {% load static %} {% block body %} 
 {% block content %}
+
+
 <div class="container">
-<h2>Search Results for "{{ query }}"</h2>
-{% if results %}
-    <ul>
-        {% for result in results %}
-            <li>{{ result.title }} - {{ result.description }} - {{ result.store_name }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>No results found.</p>
-{% endif %}
-
-
-<!-- Display Search Results from SearchBox model -->
-<h3>Search Results:</h3>
-{% for result in search_results %}
-    <p>{{ result.title }} - {{ result.description }}</p>
-{% endfor %}
-
-<!-- Display Store Results -->
-<h3>Store Results:</h3>
-{% for store in stores %}
-    <p>{{ store.name }} - {{ store.category }}</p>
-    <!-- Add more store details as needed -->
-{% endfor %}
+    <h2>Search Results for "{{ query }}"</h2>
+    <!-- Display Store Results -->
+    {% for result in results %}
+    <ur>
+        <li><a href="{% url 'store_profile' result.id %}"><h3>{{ result.name }}</h3></a></li>
+            <p>Introduction: {{ result.introduction }}</p>
+            <p>Joined_date{{ result.Joined_date }}</p>
+            <hr>
+        </li>
+    </ur>
+    {% endfor %}
+    <div class="jumbotron jumbotron-fluid" style="padding:5px">
+        <div class="container p-2 my-2 ">
+        <p>A review site for pepole and stores who wants have a review or recored on this site 
+            that to help others.
+        </p>
+        <button type="button" class="btn btn-primary btn-lg">
+            <a class="btn btn-primary" href= "{% url 'store_list' %}" role="button">All stores</a>
+        </button>
+        </div>
+    </div>
 </div>
-
-{% endblock %}
-{% endblock %}
+{% endblock %} {% endblock %}

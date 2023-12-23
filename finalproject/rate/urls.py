@@ -15,7 +15,7 @@ urlpatterns = [
     path('categories/', category_list, name='category_list'),
     path('categories/<int:category_id>/', category_detail, name='category_detail'),
 
-    path('search-store/', search_store, name='search_store'),
+    path('search_store/', search_store, name='search_store'),
     
     path('stores/', views.store_list, kwargs={'sort_by':'date'},name='store_list'),
     path('stores_sorted/<str:sort_by>/', views.store_list, name='store_sorted'),

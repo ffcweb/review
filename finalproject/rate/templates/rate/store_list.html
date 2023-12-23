@@ -2,74 +2,63 @@
 {% extends "rate/layout.html" %} {% load static %} {% block body %}
 
 <div class="container">
-  <div class="store-container">
-    <div class="card">
-      <div class="card-body">
-        <span>Sort by</span>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="radio_date"
-            value="option1"
-            onclick="window.location.href=`{% url 'store_sorted' 'date' %}`"
-          />
-          <label class="form-check-label" for="inlineRadio1">Date</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="radio_rating"
-            value="option2"
-            onclick="window.location.href=`{% url 'store_sorted' 'rating' %}`"
-          />
-          <label class="form-check-label" for="inlineRadio2">Rating</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="inlineRadioOptions"
-            id="radio_reviews"
-            value="option3"
-            onclick="window.location.href=`{% url 'store_sorted' 'reviews' %}`"
-          />
-          <label class="form-check-label" for="inlineRadio3"
-            >Most Reviewed
-          </label>
-        </div>
-
-        <hr />
-
+  <span>Sort by    | </span>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="radio_date"
+        value="option1"
+        onclick="window.location.href=`{% url 'store_sorted' 'date' %}`"/>
+        <label class="form-check-label" for="inlineRadio1">Date</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input 
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="radio_rating"
+        value="option2"
+        onclick="window.location.href=`{% url 'store_sorted' 'rating' %}`"/>
+        <label class="form-check-label" for="inlineRadio2">Rating</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+        class="form-check-input"
+        type="radio"
+        name="inlineRadioOptions"
+        id="radio_reviews"
+        value="option3"
+        onclick="window.location.href=`{% url 'store_sorted' 'reviews' %}`"/>
+        <label class="form-check-label" for="inlineRadio3" >Most Reviewed</label>
+      </div>
+      
+      <hr>
+      <!-- Display store list -->
+      <div class="container mt-5 ">
         <div class="row">
           {% for store in stores %}
-
-          <div class="card col-sm-3">
-            <img
+          <div class="col-sm-4">
+            <div style="background-color:darkcyan;color:white;padding:20px;">
+              <img
               class="card-img-top"
               src="{{ store.image_url }}"
               class="float-right"
               alt="Image"
               width="100"
-              height="100"
-            />
+              height="100"/>
+
             <div class="card-body text-center">
               <h4 class="card-title">
                 <p>
-                  <a href="{% url 'store_profile' store.id %}"
-                    >{{ store.name }}</a
-                  >
+                  <a style="color: bisque" href="{% url 'store_profile' store.id %}">{{ store.name }}</a>
                 </p>
               </h4>
               <span hidden><h2>ID : {{ store.id }}</h2></span>
               <!-- Display average star Here -->
               <p class="card-text">
-                <span class="review_rate_stars"
-                  >{{ store.average_rating }}</span
-                >
+                <span class="review_rate_stars">{{ store.average_rating }}</span>
                 <span>{{ store.average_rating}}</span>
                 <span>({{ store.review_count}})</span>
               </p>
@@ -79,42 +68,44 @@
               <p class="card-text">Joined Date: {{ store.Joined_date }}</p>
             </div>
           </div>
-          {% endfor %}
+          <br>
         </div>
-      </div>
-    </div>
-
-<br>
-
-    <!-- pagination -->
-    <div class="container">
-      <div class="d-flex justify-content-center">
-        <div class="pagination">
-          <span class="step-links">
-            {% if stores.has_previous %}
-
-            <a href="?page=1">&laquo; First | </a>
-            <a href="?page={{ stores.previous_page_number }}"> previous</a>
-
-            {% endif %}
-
-            <span class="current">
-              Page {{ stores.number }} of {{ stores.paginator.num_pages }}.
-            </span>
-
-            {% if stores.has_next %}
-
-            <a href="?page={{ stores.next_page_number }}">Next | </a>
-            <a href="?page={{ stores.paginator.num_pages }}"> Last &raquo;</a>
-
-            {% endif %}
-          </span>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
 </div>
 
+    <hr />
+
+<!-- pagination -->
+<div class="container">
+  <div class="d-flex justify-content-center">
+    <div class="pagination">
+      <span class="step-links">
+        {% if stores.has_previous %}
+
+        <a href="?page=1">&laquo; First | </a>
+        <a href="?page={{ stores.previous_page_number }}"> previous</a>
+
+        {% endif %}
+
+        <span class="current">
+          Page {{ stores.number }} of {{ stores.paginator.num_pages }}.
+        </span>
+
+        {% if stores.has_next %}
+
+        <a href="?page={{ stores.next_page_number }}">Next | </a>
+        <a href="?page={{ stores.paginator.num_pages }}"> Last &raquo;</a>
+
+        {% endif %}
+      </span>
+    </div>
+  </div>
+</div>
+
+<br>
 <script src="{% static 'rate/display_stars.js' %}"></script>
 <script>
   document.getElementById(`radio_{{ sort_by }}`).checked = true;

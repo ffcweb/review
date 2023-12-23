@@ -15,12 +15,11 @@ from django.urls import reverse
 # from .forms import ReviewForm
 from django.views.decorators.http import require_POST
 from .models import User, Store, Review, FavoriteStore, Category
-from .models import SearchBox, LikeReview, CommentOnReview, StoreFollowers
+from .models import  LikeReview, CommentOnReview, StoreFollowers
 from django.views import View
 from django.shortcuts import render
 from django.http import JsonResponse
 from .forms import UpdateProfileForm
-
 
 
 
@@ -29,7 +28,7 @@ def index(request):
     reviews = Review.objects.all().order_by("-timestamp")
 
      # use pagination built-in function
-    paginator = Paginator(reviews, 20)  # Show 10 posts per page
+    paginator = Paginator(reviews, 30)  # Show 10 posts per page
     page = request.GET.get('page')
     try:
         paginated_reviews = paginator.page(page)
@@ -41,11 +40,6 @@ def index(request):
         paginated_reviews = paginator.page(paginator.num_pages)
     
     return render(request, 'rate/index.html', {'reviews': paginated_reviews})
-
-# def index(request):
-#     reviews = Review.objects.all().order_by("-timestamp")
-#     context = {'reviews': reviews}
-#     return render(request, 'rate/index.html', context)
 
 
 def login_view(request):
@@ -128,8 +122,8 @@ def create_review(request):
         store_id = request.POST["store_id"]
         rating = request.POST["star_rating"]
         image_url = request.POST['image_url']
-        if image_url == '':
-            image_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBp_jLbdg8HuM0rkuzxlGxfyB8cswrmAlFVUHdXckCgfEk4HH-Jj-HnTU4Mnu8T0VYMxc&usqp=CAU"
+        # if image_url == '':
+        #     image_url = ""
        
         user = request.user
 
@@ -257,9 +251,7 @@ def store_profile(request, store_id):
         'follower_count':follower_count,
     }
 
-    return render(request, 'rate/store_profile.html', context)
-
-    # return render(request, 'rate/store_profile.html', { "store": store, 'reviews': paginated_reviews})
+    return render(request, 'rate/store_profile.html', reviews)
 
 # ================================================
 
@@ -275,7 +267,7 @@ def user_profile(request, user_id):
         review.like_count = len(likes)
 
 
-    paginator = Paginator(user_reviews, 15)
+    paginator = Paginator(user_reviews, 10)
     page = request.GET.get('page')
     try:
         paginated_user_reviews = paginator.page(page)
@@ -315,18 +307,17 @@ def update_user_image(request):
     return JsonResponse(data)
 
 
-def popular_stores(request):
-    return render(request, 'rate/popular_stores.html')  
+# def popular_stores(request):
+#     return render(request, 'rate/popular_stores.html')  
 
-    # ==============================================
-def star_stores(request):
-    return render(request, 'rate/star_stores.html')  
-    # ==============================================
+# def star_stores(request):
+#     return render(request, 'rate/star_stores.html')  
+
 
 
 def search_store(request):
     query = request.GET.get('q', '')
-    results = SearchBox.objects.filter(store_name__icontains=query)
+    results = Store.objects.filter(name__contains=query)
     
     context = {'results': results, 'query': query}
     return render(request, 'rate/search_results.html', context)
@@ -388,6 +379,8 @@ def toggle_like(request,review_id):
     }
     return JsonResponse(data)
        
+
+
 @require_POST
 @login_required
 def delete_review(request, review_id):

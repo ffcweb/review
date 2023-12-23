@@ -214,44 +214,36 @@
 
 3. To run a Django web application, you typically follow these steps. Please ensure you have Python and Django installed on your system:
 
-4. Install Python:
-
-- Make sure you have Python installed. You can download it from the official Python website.
-
-5. Install Django:
-
-- Open a terminal or command prompt and run the following command to install Django using pip:
-
-6. Copy code
+4. Copy code
    `pip install Django`
 
-7. Clone the Project:
+5. Clone the Project:
 
 - Clone the project repository or download the source code from where it is hosted (e.g., GitHub).
 
-8. Navigate to Project Directory:
+6. Navigate to Project Directory:
 
 - Open a terminal or command prompt, navigate to the project directory using the cd command:
   `cd path/to/your/project`
 
-8. Apply Migrations:
+7. Apply Migrations:
 
 - Run the following commands to apply database migrations:
 
-10. Copy code
+8. Copy code
 
 ```
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-11. Create a Superuser (Admin):
+9. Create a Superuser (Admin):
 
 - Create a superuser account to access the Django admin interface:
 
 `python manage.py createsuperuser`
 
-12. Run the Development Server:
+10. Run the Development Server:
 
 - Start the development server using the following command:
 

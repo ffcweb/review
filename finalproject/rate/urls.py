@@ -5,7 +5,6 @@ from .views import search_store, toggle_follow_store,toggle_like
 from .views import user_profile,update_user_image, delete_review
 from . import views
 
-
 urlpatterns = [
     path("", views.index, name="index"),
     path("login", views.login_view, name="login"),
@@ -35,11 +34,6 @@ urlpatterns = [
     path('toggle_like/<int:review_id>/', toggle_like, name='toggle_like'),
 
     path('delete_review/<int:review_id>/', delete_review, name='delete_review'),
-
-
-    # path('popular_stores/', views.popular_stores, name='popular_stores'),
-    # path('star_stores/', views.star_stores, name='star_stores'),
-
 
 
 ]

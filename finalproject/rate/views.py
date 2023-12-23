@@ -251,7 +251,7 @@ def store_profile(request, store_id):
         'follower_count':follower_count,
     }
 
-    return render(request, 'rate/store_profile.html', reviews)
+    return render(request, 'rate/store_profile.html', context)
 
 # ================================================
 

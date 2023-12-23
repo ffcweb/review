@@ -4,12 +4,46 @@
 
 ## Overview
 
-The Review web application is a platform that allows users to write and share reviews for stores. Users can rate stores, provide feedback, and include images, spending and links in their reviews. The application also features user authentication, user profiles, store profiles, and various functionalities to enhance the user experience.
+- The Review web application is a platform that allows users to write and share reviews for stores. Users can rate stores, provide feedback, and include images, spending and links in their reviews. The application also features user authentication, user profiles, store profiles, and various functionalities to enhance the user experience.
 
 ## Distinctiveness and Complexity
 
-- Why it's Distinctive
-  The Review web application stands out due to its comprehensive features and user-centric design. Here are some distinctive aspects:
+- Enhanced Navigation Bar with User Profile Image
+  In the Review web application, the navigation bar has been enhanced to provide a personalized experience for users who are logged in. The modification includes the display of the user's profile image at the top of the website, contributing to a more user-friendly and visually appealing interface.
+
+- Changes Made
+  Profile Image Integration:
+
+- Purpose: Enhance user recognition and personalization by displaying the user's profile image in the navigation bar.
+  ... Implementation:
+  ... A dedicated list item (<li>) has been added to the navigation bar specifically for the user's profile image.
+  ... The {% if user.is_authenticated %} condition ensures that the profile image is displayed only when the user is logged in.
+  ... The user's profile image is retrieved from the user.image_url attribute, providing a visual representation of the user.
+
+### Styling Enhancement:
+
+... Purpose: Ensure a visually appealing presentation of the profile image.
+
+1.  Implementation:
+
+- The profile image is styled with a border-radius property to create a circular appearance.
+  Adjustments to the width and height attributes can be made to achieve the desired dimensions.
+  User Experience
+  Logged-In Users:
+
+- When a user is authenticated and logged in, their profile image is prominently displayed at the top of the website, offering a personalized touch to the navigation bar.
+
+- The inclusion of the profile image is intended to make users feel recognized and connected to the application.
+
+2. Consistent Design:
+
+- The integration of the user's profile image aligns with the overall design principles of the application, ensuring a consistent and cohesive user experience.
+
+... This enhancement contributes to a more engaging and personalized user interface, making the Review web application stand out in terms of user experience and design considerations.
+
+3.  Why it's Distinctive
+
+- The Review web application stands out due to its comprehensive features and user-centric design. Here are some distinctive aspects:
 
 - Rich Reviews: Users can write detailed reviews that include images, spending details, and star ratings. This provides a comprehensive overview of their experience with a particular store.
 
@@ -25,8 +59,9 @@ The Review web application is a platform that allows users to write and share re
 
 - Sorting Stores: Users can sort stores based on criteria such as ratings, reviews, and joining date, providing flexibility in exploring stores.
 
-- Complexity
-  The complexity of the application is evident in the following areas:
+### Complexity
+
+- The complexity of the application is evident in the following areas:
 
 - Pagination: The use of pagination for reviews and stores enhances performance and user experience, especially as the dataset grows.
 

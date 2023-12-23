@@ -15,3 +15,78 @@
     animation-duration: 2s;
     animation-fill-mode: forwards;
 }
+
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+body {
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Styles for small screens */
+
+    /* Adjust the navigation bar */
+    nav {
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    /* Center align the logo or brand name */
+    .navbar-brand {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Reduce padding or margin for smaller containers */
+    .container {
+        padding: 15px;
+    }
+
+    /* Make fonts slightly smaller for better readability */
+    body {
+        font-size: 14px;
+    }
+
+    /* Adjust the size of certain elements */
+    .some-element {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Hide or modify elements that may be less important on smaller screens */
+    .hidden-on-small-screens {
+        display: none;
+    }
+
+    /* Adjust the layout of specific components */
+    .responsive-component {
+        flex-direction: column;
+    }
+
+    /* Modify the appearance of buttons or links for better touch interaction */
+    button, a.button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

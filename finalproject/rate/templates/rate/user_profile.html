@@ -21,6 +21,8 @@
                 <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
                 <button class="btn btn-primary" onclick="updateProfileImage()">Update Profile Image</button>
             </div>
+            <hr>
+
             <br>
             <!-- <h4 class="card-title">Name: {{ user.username }}</h4> -->
             <p class="card-text">Joined Date: {{ user.date_joined }}</p>
@@ -75,7 +77,7 @@
                         <div>
                             <br>
                             <button id="delete_review" onclick="handleDeleteReview({{ review.id }})">Delete</button>
-                            <hr>
+                            <hr style="color: aliceblue;">
                         </div>
                 </ul>
             </div>

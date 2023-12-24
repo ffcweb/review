@@ -9,13 +9,14 @@
     <h1 class="display-5 fw-bold">{{ store.name }}'s Profile</h1>
     <span hidden><h2>ID : {{ store.id }}</h2></span>
     <div class="review" data-post-id="{{ review.id }}">
-      <img src="{{ store.image_url }}" width="200" height="200" style="border-radius:50%">
-      <div class="card-body">
+      <img src="{{ store.image_url }}" width="300" height="300" style="border-radius:50%">
+
+      <!-- <div class="card-body">
         <label for="newImageUrl">New Image URL:</label>
         <input type="text" id="id_new_image_url" name="new_image_url" placeholder="Enter new image URL">
         <button class="btn btn-primary" onclick="updateProfileImage()">Update Profile Image</button>
-      </div>
-    
+      </div> -->
+    <hr>
       <br>
       <span class="review_rate_stars">{{ store.average_rating }}</span>
       <span>{{ store.average_rating}}
